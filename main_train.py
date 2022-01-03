@@ -48,7 +48,7 @@ def train(net, data):
 
 ############
 if __name__=='__main__':
-	print("Run!!!")
+	print("Run 2 !!!")
 	os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
 	os.environ["CUDA_VISIBLE_DEVICES"] = '0'  ## specify the GPU to use
 
