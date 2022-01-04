@@ -18,6 +18,7 @@ class Data_Configs:
 
 class Data_S3DIS:
     def __init__(self, dataset_path, train_areas, test_areas, train_batch_size=4):
+        # init__( dataset_path = './data_s3dis/', train_areas = ['Area_1'], test_areas = ['Area_5'], train_batch_size=4):
         self.root_folder_4_traintest = dataset_path
         self.train_files = self.load_full_file_list(areas = train_areas)
         self.test_files = self.load_full_file_list(areas = test_areas)

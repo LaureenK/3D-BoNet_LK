@@ -62,9 +62,10 @@ if __name__=='__main__':
 
 	####
 	from helper_data_s3dis import Data_S3DIS as Data
-	train_areas =['Area_1', 'Area_2', 'Area_3', 'Area_4', 'Area_6']
+	train_areas =['Area_1']
 	test_areas =['Area_5']
 
-	dataset_path = './data_s3dis/'
+	dataset_path = './data/indoor3d_ins_seg_hdf5/'
 	data = Data(dataset_path, train_areas, test_areas, train_batch_size=4)
-	train(net, data)
+	# init__( dataset_path = './data_s3dis/', train_areas = ['Area_1', 'Area_2', 'Area_3', 'Area_4', 'Area_6'], test_areas = ['Area_5'], train_batch_size=4):
+	#train(net, data)
