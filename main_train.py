@@ -68,4 +68,4 @@ if __name__=='__main__':
 	dataset_path = './data/indoor3d_ins_seg_hdf5/'
 	data = Data(dataset_path, train_areas, test_areas, train_batch_size=4)
 	# init__( dataset_path = './data_s3dis/', train_areas = ['Area_1', 'Area_2', 'Area_3', 'Area_4', 'Area_6'], test_areas = ['Area_5'], train_batch_size=4):
-	#train(net, data)
+	train(net, data)
