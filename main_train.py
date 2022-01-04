@@ -1,7 +1,7 @@
 import os
 
 def train(net, data):
-	for ep in range(0, 51,1):
+	for ep in range(0, 5,1):
 		l_rate = max(0.0005/(2**(ep//20)), 0.00001)
 
 		data.shuffle_train_files(ep)
@@ -18,7 +18,7 @@ def train(net, data):
 				sum_train = net.sess.run(net.sum_merged,
 				feed_dict={net.X_pc: bat_pc[:, :, 0:9], net.Y_bbvert: bat_bbvert, net.Y_pmask: bat_pmask, net.Y_psem: bat_psem_onehot, net.lr: l_rate, net.is_train: False})
 				net.sum_writer_train.add_summary(sum_train, ep*total_train_batch_num + i)
-			print ('ep', ep, 'i', i, 'psemce', ls_psemce, 'bbvert', ls_bbvert_all, 'l2', ls_bbvert_l2, 'ce', ls_bbvert_ce, 'siou', ls_bbvert_iou, 'bbscore', ls_bbscore, 'pmask', ls_pmask)
+			print ('ep', ep, 'i', i, 'psemce', ls_psemce, 'bbvert', ls_bbvert_all, 'l2', ls_bbvert_l2, 'ce', ls_bbvert_ce, '\nsiou', ls_bbvert_iou, 'bbscore', ls_bbscore, 'pmask', ls_pmask)
 
 			###### random testing
 			if i%200==0:
@@ -48,7 +48,7 @@ def train(net, data):
 
 ############
 if __name__=='__main__':
-	print("Run 2 !!!")
+
 	os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
 	os.environ["CUDA_VISIBLE_DEVICES"] = '0'  ## specify the GPU to use
 
