@@ -66,6 +66,7 @@ class BoNet:
 		l0_xyz = X_pc[:,:,0:3]
 		l0_points = X_pc[:,:,3:9]
 
+
 		l1_xyz, l1_points, l1_indices = pnet2.pointnet_sa_module(l0_xyz, l0_points, npoint=1024, radius=0.1, nsample=32,
 			mlp=[32, 32, 64], mlp2=None, group_all=False, is_training=None, bn_decay=None, scope='layer1')
 		l2_xyz, l2_points, l2_indices = pnet2.pointnet_sa_module(l1_xyz, l1_points, npoint=256, radius=0.2, nsample=64,

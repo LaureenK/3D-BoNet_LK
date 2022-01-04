@@ -52,7 +52,7 @@ if __name__=='__main__':
 	os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
 	os.environ["CUDA_VISIBLE_DEVICES"] = '0'  ## specify the GPU to use
 
-	from main_3D_BoNet import BoNet
+	from main_3D_BoNet_LK import BoNet
 	from helper_data_s3dis import Data_Configs as Data_Configs
 
 	configs = Data_Configs()

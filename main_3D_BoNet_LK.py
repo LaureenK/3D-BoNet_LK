@@ -66,11 +66,22 @@ class BoNet:
 		l0_xyz = X_pc[:,:,0:3]
 		l0_points = X_pc[:,:,3:9]
 
-		l1_xyz, l1_points, l1_indices = pnet2.pointnet_sa_module(l0_xyz, l0_points, npoint=1024, radius=0.1, nsample=32,
+		radius1 = 2
+		radius2 = 4
+		radius3 = 8
+		radius4 = 16
+
+    	#alle ein höher Tensorflow error
+		npoint1 = 2048
+		npoint2 = 512
+		npoint3 = 128
+		npoint4 = 64
+
+		l1_xyz, l1_points, l1_indices = pnet2.pointnet_sa_module(l0_xyz, l0_points, npoint=npoint1, radius=radius1, nsample=32,
 			mlp=[32, 32, 64], mlp2=None, group_all=False, is_training=None, bn_decay=None, scope='layer1')
-		l2_xyz, l2_points, l2_indices = pnet2.pointnet_sa_module(l1_xyz, l1_points, npoint=256, radius=0.2, nsample=64,
+		l2_xyz, l2_points, l2_indices = pnet2.pointnet_sa_module(l1_xyz, l1_points, npoint=npoint2, radius=radius2, nsample=64,
 			mlp=[64, 64, 128], mlp2=None, group_all=False, is_training=None, bn_decay=None, scope='layer2')
-		l3_xyz, l3_points, l3_indices = pnet2.pointnet_sa_module(l2_xyz, l2_points, npoint=64, radius=0.4, nsample=128,
+		l3_xyz, l3_points, l3_indices = pnet2.pointnet_sa_module(l2_xyz, l2_points, npoint=npoint3, radius=radius3, nsample=128,
 		    mlp=[128, 128, 256], mlp2=None, group_all=False, is_training=None, bn_decay=None, scope='layer3')
 		l4_xyz, l4_points, l4_indices = pnet2.pointnet_sa_module(l3_xyz, l3_points, npoint=None, radius=None, nsample=None,
 			mlp=[256, 256, 512], mlp2=None, group_all=True, is_training=None, bn_decay=None, scope='layer4')
