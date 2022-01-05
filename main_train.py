@@ -1,7 +1,7 @@
 import os
 
 def train(net, data):
-	for ep in range(0, 5,1):
+	for ep in range(0, 6,1):
 		l_rate = max(0.0005/(2**(ep//20)), 0.00001)
 
 		data.shuffle_train_files(ep)
@@ -67,6 +67,6 @@ if __name__=='__main__':
 
 	dataset_path = './data/indoor3d_ins_seg_hdf5/'
 	data = Data(dataset_path, train_areas, test_areas, train_batch_size=4)
-	bat_pc, _, _, bat_psem_onehot, bat_bbvert, bat_pmask = data.load_train_next_batch()
+	#bat_pc, _, _, bat_psem_onehot, bat_bbvert, bat_pmask = data.load_train_next_batch()
 	# init__( dataset_path = './data_s3dis/', train_areas = ['Area_1', 'Area_2', 'Area_3', 'Area_4', 'Area_6'], test_areas = ['Area_5'], train_batch_size=4):
-	#train(net, data)
+	train(net, data)
