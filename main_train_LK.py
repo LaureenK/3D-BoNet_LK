@@ -61,7 +61,7 @@ if __name__=='__main__':
 	net.build_graph()
 
 	####
-	from helper_data_s3dis import Data_S3DIS as Data
+	from helper_data_s3dis_LK import Data_S3DIS as Data
 
 	train_dataset_path = '/hdd/klein/prepared/TrainFiles'
 	test_dataset_path = '/hdd/klein/prepared/TestFiles'
