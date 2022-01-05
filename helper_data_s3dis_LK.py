@@ -156,8 +156,9 @@ class Data_S3DIS:
         #pc_xyzrgb = np.concatenate([pc_xyzrgb, ori_xyz], axis=-1)
 
         ########
-        sem_labels = sem_labels.reshape([-1])
-        ins_labels = ins_labels.reshape([-1])
+        #sem_labels = sem_labels.reshape([-1])
+        #ins_labels = ins_labels.reshape([-1])
+        
         bbvert_padded_labels, pmask_padded_labels = Data_S3DIS.get_bbvert_pmask_labels(pc_xyzrgb, ins_labels)
 
         psem_onehot_labels = np.zeros((pc_xyzrgb.shape[0], Data_Configs.sem_num), dtype=np.int8)
