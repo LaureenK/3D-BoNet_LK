@@ -8,8 +8,8 @@ import os
 import numpy as np
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--inputpath', default='/hdd/klein/TestFiles')
-parser.add_argument('--outputpath', default='/hdd/klein/prepared/TestFiles')
+parser.add_argument('--inputpath', default='/hdd/klein/TestFiles/')
+parser.add_argument('--outputpath', default='/hdd/klein/prepared/TestFiles/')
 #parser.add_argument('--inputpath', default='E:/Users/Laureen/Documents/Test1/')
 #parser.add_argument('--outputpath', default='E:/Users/Laureen/Documents/Test2/')
 FLAGS = parser.parse_args()  
