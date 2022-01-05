@@ -85,13 +85,25 @@ class Data_S3DIS:
         print(type(pc))
         print(pc.shape)
 
+        #pc
+        #<type 'numpy.ndarray'>
+        #(4096, 9)
+
         print("sem_labels")
         print(type(sem_labels))
         print(sem_labels.shape)
 
+        #sem_labels
+        #<type 'numpy.ndarray'>
+        #(4096,)
+
         print("ins_labels")
         print(type(ins_labels))
         print(ins_labels.shape)
+
+        #ins_labels
+        #<type 'numpy.ndarray'>
+        #(4096,)
 
         return pc, sem_labels, ins_labels
 

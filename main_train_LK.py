@@ -53,7 +53,7 @@ if __name__=='__main__':
 	os.environ["CUDA_VISIBLE_DEVICES"] = '0'  ## specify the GPU to use
 
 	from main_3D_BoNet_LK import BoNet
-	from helper_data_s3dis import Data_Configs as Data_Configs
+	from helper_data_s3dis_LK import Data_Configs as Data_Configs
 
 	configs = Data_Configs()
 	net = BoNet(configs = configs)
@@ -62,9 +62,10 @@ if __name__=='__main__':
 
 	####
 	from helper_data_s3dis import Data_S3DIS as Data
-	train_areas =['Area_1', 'Area_2', 'Area_3', 'Area_4', 'Area_6']
-	test_areas =['Area_5']
 
-	dataset_path = './data_s3dis/'
-	data = Data(dataset_path, train_areas, test_areas, train_batch_size=4)
-	train(net, data)
+	train_dataset_path = '/hdd/klein/prepared/TrainFiles'
+	test_dataset_path = '/hdd/klein/prepared/TestFiles'
+
+	data = Data(train_dataset_path, test_dataset_path, train_batch_size=8)
+	bat_pc, _, _, bat_psem_onehot, bat_bbvert, bat_pmask = data.load_train_next_batch()
+	#train(net, data)

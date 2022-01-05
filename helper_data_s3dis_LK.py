@@ -82,6 +82,30 @@ class Data_S3DIS:
         if len(npIns) != NUM_POINTS:
             raise ValueError("Wrong NUM_POINTS of cloud: ", fname)
  
+        print("npPoints")
+        print(type(npPoints))
+        print(npPoints.shape)
+
+        #pc
+        #<type 'numpy.ndarray'>
+        #(4096, 9)
+
+        print("npSeg")
+        print(type(npSeg))
+        print(npSeg.shape)
+
+        #sem_labels
+        #<type 'numpy.ndarray'>
+        #(4096,)
+
+        print("npIns")
+        print(type(npIns))
+        print(npIns.shape)
+
+        #ins_labels
+        #<type 'numpy.ndarray'>
+        #(4096,)
+
         return npPoints, npSeg, npIns
 
 
@@ -118,7 +142,7 @@ class Data_S3DIS:
 
     @staticmethod
     def load_fixed_points(file_path):
-        pc_xyzrgb, sem_labels, ins_labels = Data_S3DIS.load_raw_data_file_s3dis_block(file_path)
+        pc_xyzrgb, sem_labels, ins_labels = Data_S3DIS.load_ascii_cloud_prepared(file_path)
 
         ### center xy within the block
         min_x = np.min(pc_xyzrgb[:,0]); max_x = np.max(pc_xyzrgb[:,0])
