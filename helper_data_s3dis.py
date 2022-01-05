@@ -134,6 +134,14 @@ class Data_S3DIS:
             pc_xyzrgb[:, 1:2] = (pc_xyzrgb[:, 1:2] - min_y)/ np.maximum((max_y - min_y), 1e-3)
             pc_xyzrgb[:, 2:3] = (pc_xyzrgb[:, 2:3] - min_z)/ np.maximum((max_z - min_z), 1e-3)
 
+        min_x = np.min(pc_xyzrgb[:,0]); max_x = np.max(pc_xyzrgb[:,0])
+        min_y = np.min(pc_xyzrgb[:,1]); max_y = np.max(pc_xyzrgb[:,1])
+        min_z = np.min(pc_xyzrgb[:,2]); max_z = np.max(pc_xyzrgb[:,2])
+
+        print("min_x : ", min_x, " max_x: ", max_x)
+        print("min_y : ", min_y, " max_y: ", max_y)
+        print("min_z : ", min_z, " max_x: ", max_z)
+        
         pc_xyzrgb = np.concatenate([pc_xyzrgb, ori_xyz], axis=-1)
 
         ########

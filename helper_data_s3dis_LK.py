@@ -8,6 +8,11 @@ import h5py
 
 NUM_POINTS = 2**14
 
+def unison_shuffled_copies(a, b, c):
+    assert len(a) == len(b) == len(c)
+    p = np.random.permutation(len(a))
+    return a[p], b[p], c[p]
+
 class Data_Configs:
     sem_names = ['person', 'dog', 'bicycle', 'sportsball']
     sem_ids = [0,1,2,3]
@@ -58,6 +63,8 @@ class Data_S3DIS:
         npSeg = np.array(labels, dtype=np.uint8)
         npIns = np.array(instances, dtype=np.uint16)
 
+        npPoints, npSeg, npIns = unison_shuffled_copies(npPoints, npSeg, npIns)
+
         if len(npIns) != NUM_POINTS:
             raise ValueError("Wrong NUM_POINTS of cloud: ", fname)
  
@@ -86,7 +93,6 @@ class Data_S3DIS:
         #(16384,)
 
         return npPoints, npSeg, npIns
-
 
     @staticmethod
     def get_bbvert_pmask_labels(pc, ins_labels):
@@ -139,6 +145,14 @@ class Data_S3DIS:
             pc_xyzrgb[:, 1:2] = (pc_xyzrgb[:, 1:2] - min_y)/ np.maximum((max_y - min_y), 1e-3)
             pc_xyzrgb[:, 2:3] = (pc_xyzrgb[:, 2:3] - min_z)/ np.maximum((max_z - min_z), 1e-3)
 
+        min_x = np.min(pc_xyzrgb[:,0]); max_x = np.max(pc_xyzrgb[:,0])
+        min_y = np.min(pc_xyzrgb[:,1]); max_y = np.max(pc_xyzrgb[:,1])
+        min_z = np.min(pc_xyzrgb[:,2]); max_z = np.max(pc_xyzrgb[:,2])
+
+        print("min_x : ", min_x, " max_x: ", max_x)
+        print("min_y : ", min_y, " max_y: ", max_y)
+        print("min_z : ", min_z, " max_x: ", max_z)
+        
         pc_xyzrgb = np.concatenate([pc_xyzrgb, ori_xyz], axis=-1)
 
         ########
