@@ -6,6 +6,8 @@ import copy
 from random import shuffle
 import h5py
 
+NUM_POINTS = 2**14
+
 class Data_Configs:
     sem_names = ['person', 'dog', 'bicycle', 'sportsball']
     sem_ids = [0,1,2,3]
@@ -33,35 +35,6 @@ class Data_S3DIS:
 
         self.train_next_bat_index = 0
 
-    def load_full_file_list(self, areas):
-        all_files =[]
-        for a in areas:
-            print('check area:', a)
-            files = sorted(glob.glob(self.root_folder_4_traintest + a + '*.h5'))
-            for f in files:
-                fin = h5py.File(f, 'r')
-                coords = fin['coords'][:]
-                semIns_labels = fin['labels'][:].reshape([-1, 2])
-                ins_labels = semIns_labels[:,1]
-                sem_labels = semIns_labels[:,0]
-
-                data_valid = True
-                ins_idx = np.unique(ins_labels)
-                for i_i in ins_idx:
-                    if i_i<=-1: continue
-                    sem_labels_tp = sem_labels[ins_labels==i_i]
-                    unique_sem_labels = np.unique(sem_labels_tp)
-                    if len(unique_sem_labels) >= 2:
-                        print('>= 2 sem for an ins:', f)
-                        data_valid = False
-                        break
-                if not data_valid: continue
-                block_num = coords.shape[0]
-                for b in range(block_num):
-                    all_files.append(f+'_'+str(b).zfill(4))
-
-        return all_files
-
     @staticmethod
     def load_raw_data_file_s3dis_block(file_path):
         block_id = int(file_path[-4:])
@@ -83,6 +56,34 @@ class Data_S3DIS:
         #Plot.draw_pc_semins(pc_xyz=pc[:, 0:3], pc_semins=ins_labels)
 
         return pc, sem_labels, ins_labels
+
+    @staticmethod
+    def load_ascii_cloud_prepared(fname):
+        points = []
+        labels = []
+        instances = []
+
+        with open(fname, 'r') as fd:
+            for line in fd.readlines():
+                if "//" in line:
+                    continue
+
+                x, y, t, class_label, instance_label = line.strip().split(' ')
+                x, y, t, class_label, instance_label = float(x), float(y), float(t), int(class_label), int(instance_label)
+
+                points.append(np.array([x, y, t], dtype=np.float32))
+                labels.append(class_label)
+                instances.append(instance_label)
+
+        npPoints = np.array(points, dtype=np.float32)
+        npSeg = np.array(labels, dtype=np.uint8)
+        npIns = np.array(instances, dtype=np.uint16)
+
+        if len(npIns) != NUM_POINTS:
+            raise ValueError("Wrong NUM_POINTS of cloud: ", fname)
+ 
+        return npPoints, npSeg, npIns
+
 
     @staticmethod
     def get_bbvert_pmask_labels(pc, ins_labels):
