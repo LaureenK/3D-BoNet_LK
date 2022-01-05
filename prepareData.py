@@ -217,7 +217,7 @@ def downscale(points, labels, instances):
                             while len(small_points3[z]) != NUM_POINTS:
                                 index = random.randrange(len(small_points3[z]))
                                 print(index)
-                                small_points3[z].remove(index)
+                                small_points3[z].pop(index)
                                 print(len(small_points3[z]))
                      
                         else: 
