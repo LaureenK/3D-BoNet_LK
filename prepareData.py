@@ -210,15 +210,15 @@ def downscale(points, labels, instances):
                     #print(len(small_points3))
                     while z < len(small_points3):
                         if len(small_points3[z]) > NUM_POINTS:
-                            print('happend') #remove
-                            print(len(small_points3[z]))
-                            print(type(small_points3[z]))
+                            #print('happend') #remove
+                            #print(len(small_points3[z]))
+                            #print(type(small_points3[z]))
 
                             while len(small_points3[z]) != NUM_POINTS:
                                 index = random.randrange(len(small_points3[z]))
-                                print(index)
+                                #print(index)
                                 small_points3[z].pop(index)
-                                print(len(small_points3[z]))
+                                #print(len(small_points3[z]))
                      
                         else: 
                             small_points.append(small_points3[z])
@@ -280,6 +280,7 @@ if __name__ == "__main__":
 
     i=0
     while i < len(INPUTLIST):
+        print(i)
         points, labels, instances = load_and_upscale(INPUTLIST[i])
         points, labels, instances = mapInstance(points, labels, instances)
 
