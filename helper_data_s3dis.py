@@ -86,9 +86,12 @@ class Data_S3DIS:
     @staticmethod
     def get_bbvert_pmask_labels(pc, ins_labels):
         gt_bbvert_padded = np.zeros((Data_Configs.ins_max_num, 2, 3), dtype=np.float32)
+        print(gt_bbvert_padded.shape)
         gt_pmask = np.zeros((Data_Configs.ins_max_num, pc.shape[0]), dtype=np.float32)
+        print(gt_pmask.shape)
         count = -1
         unique_ins_labels = np.unique(ins_labels)
+        print(unique_ins_labels.shape)
         for ins_ind in unique_ins_labels:
             if ins_ind <= -1: continue
             count += 1
