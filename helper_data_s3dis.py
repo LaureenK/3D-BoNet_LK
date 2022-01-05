@@ -137,18 +137,14 @@ class Data_S3DIS:
         min_y = np.min(pc_xyzrgb[:,1]); max_y = np.max(pc_xyzrgb[:,1])
         min_z = np.min(pc_xyzrgb[:,2]); max_z = np.max(pc_xyzrgb[:,2])
 
-        print(pc_xyzrgb.shape)
+        #print(pc_xyzrgb.shape)
         pc_xyzrgb = np.concatenate([pc_xyzrgb, ori_xyz], axis=-1)
         #original + normalisierte Werte
-        print(pc_xyzrgb.shape)
+        #print(pc_xyzrgb.shape)
 
         ########
-        print(sem_labels.shape)
         sem_labels = sem_labels.reshape([-1])
-        print(sem_labels.shape)
-        print(ins_labels.shape)
         ins_labels = ins_labels.reshape([-1])
-        print(ins_labels.shape)
 
         bbvert_padded_labels, pmask_padded_labels = Data_S3DIS.get_bbvert_pmask_labels(pc_xyzrgb, ins_labels)
 
