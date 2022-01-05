@@ -71,7 +71,7 @@ class BoNet:
 		radius3 = 8
 		radius4 = 16
 
-    	#alle ein höher Tensorflow error
+    	#alle ein hoeher Tensorflow error
 		npoint1 = 2048
 		npoint2 = 512
 		npoint3 = 128
