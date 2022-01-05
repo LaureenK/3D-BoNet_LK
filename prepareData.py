@@ -188,7 +188,7 @@ def downscale(points, labels, instances):
 
     #### divide x no.1####
     small_points1, small_labels1, small_instances1, left1, right1 = create_two_x(points, labels, instances)
-    print(len(small_points1))
+    #print(len(small_points1))
     i = 0
     while i < len(small_points1):
         if len(small_points1[i]) > NUM_POINTS:
@@ -196,7 +196,7 @@ def downscale(points, labels, instances):
             small_points2, small_labels2, small_instances2, top1, down1 = create_two_y(small_points1[i], small_labels1[i], small_instances1[i])
 
             j = 0
-            print(len(small_points2))
+            #print(len(small_points2))
             while j < len(small_points2):
                 if len(small_points2[j]) > NUM_POINTS:
                     #### divide x no.2####
@@ -207,11 +207,11 @@ def downscale(points, labels, instances):
                         small_points3, small_labels3, small_instances3, left2, right2 = create_two_x(points, labels, instances, 320,640)
 
                     z = 0
-                    print(len(small_points3))
+                    #print(len(small_points3))
                     while z < len(small_points3):
                         if len(small_points3[z]) > NUM_POINTS:
                             while len(small_points3[z]) != NUM_POINTS:
-                                index = randrange(len(small_points3[z]))
+                                index = random.randrange(len(small_points3[z]))
                                 small_points3[z].remove(index)
 
                             print('happend')
@@ -233,7 +233,7 @@ def downscale(points, labels, instances):
 
         i = i + 1
     
-    print("Result: ", len(small_points))
+    #print("Result: ", len(small_points))
     return small_points, small_labels, small_instances
 
 def mapInstance(points, labels, instances):
