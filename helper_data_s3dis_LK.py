@@ -1,3 +1,4 @@
+import os
 import glob
 import numpy as np
 import random
@@ -6,24 +7,25 @@ from random import shuffle
 import h5py
 
 class Data_Configs:
-    sem_names = ['ceiling', 'floor', 'wall', 'beam', 'column', 'window', 'door',
-                 'table', 'chair', 'sofa', 'bookcase', 'board', 'clutter']
-    sem_ids = [0,1,2,3,4,5,6,7,8,9,10,11,12]
+    sem_names = ['person', 'dog', 'bicycle', 'sportsball']
+    sem_ids = [0,1,2,3]
 
-    points_cc = 9
+    points_cc = 9 #3?
     sem_num = len(sem_names)
-    ins_max_num = 24
-    train_pts_num = 4096
-    test_pts_num = 4096
+    ins_max_num = 48
+    train_pts_num = 16384
+    test_pts_num = 16384 #??
 
 class Data_S3DIS:
-    def __init__(self, dataset_path, train_areas, test_areas, train_batch_size=4):
+    def __init__(self, train_dataset_path, test_dataset_path, train_batch_size=8):
         # init__( dataset_path = './data_s3dis/', train_areas = ['Area_1'], test_areas = ['Area_5'], train_batch_size=4):
-        self.root_folder_4_traintest = dataset_path
-        self.train_files = self.load_full_file_list(areas = train_areas)
-        self.test_files = self.load_full_file_list(areas = test_areas)
+
+        self.train_files = glob.glob(os.path.join(train_dataset_path, "*.csv"))
+        self.test_files = glob.glob(os.path.join(test_dataset_path, "*.csv"))
         print('train files:', len(self.train_files))
         print('test files:', len(self.test_files))
+
+        
 
         self.ins_max_num = Data_Configs.ins_max_num
         self.train_batch_size = train_batch_size

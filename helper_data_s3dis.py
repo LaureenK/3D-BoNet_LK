@@ -22,11 +22,9 @@ class Data_S3DIS:
         self.root_folder_4_traintest = dataset_path
         self.train_files = self.load_full_file_list(areas = train_areas)
         self.test_files = self.load_full_file_list(areas = test_areas)
-        #jeder Block gilt als File
+        #jeder Block gilt als File #Namensliste
         print('train files:', len(self.train_files))
-        print(self.train_files)
         print('test files:', len(self.test_files))
-        print(self.test_files)
 
         self.ins_max_num = Data_Configs.ins_max_num
         self.train_batch_size = train_batch_size
@@ -149,6 +147,8 @@ class Data_S3DIS:
 
     def load_train_next_batch(self):
         bat_files = self.train_files[self.train_next_bat_index*self.train_batch_size:(self.train_next_bat_index+1)*self.train_batch_size]
+        print("Bat_files: " , len(bat_files))
+        print(bat_files)
         bat_pc=[]
         bat_sem_labels=[]
         bat_ins_labels=[]
