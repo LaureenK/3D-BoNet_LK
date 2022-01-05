@@ -138,10 +138,10 @@ class Data_S3DIS:
         min_y = np.min(pc_xyzrgb[:,1]); max_y = np.max(pc_xyzrgb[:,1])
         min_z = np.min(pc_xyzrgb[:,2]); max_z = np.max(pc_xyzrgb[:,2])
 
-        print("min_x : ", min_x, " max_x: ", max_x)
-        print("min_y : ", min_y, " max_y: ", max_y)
-        print("min_z : ", min_z, " max_x: ", max_z)
-        
+        print("2 min_x : ", min_x, " max_x: ", max_x)
+        print("2 min_y : ", min_y, " max_y: ", max_y)
+        print("2 min_z : ", min_z, " max_x: ", max_z)
+
         pc_xyzrgb = np.concatenate([pc_xyzrgb, ori_xyz], axis=-1)
 
         ########
