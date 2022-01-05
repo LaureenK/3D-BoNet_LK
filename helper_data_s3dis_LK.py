@@ -12,7 +12,7 @@ class Data_Configs:
     sem_names = ['person', 'dog', 'bicycle', 'sportsball']
     sem_ids = [0,1,2,3]
 
-    points_cc = 9 #3?
+    points_cc = 3 #3?
     sem_num = len(sem_names)
     ins_max_num = 48
     train_pts_num = 16384
@@ -35,28 +35,7 @@ class Data_S3DIS:
 
         self.train_next_bat_index = 0
 
-    @staticmethod
-    def load_raw_data_file_s3dis_block(file_path):
-        block_id = int(file_path[-4:])
-        file_path = file_path[0:-5]
-
-        fin = h5py.File(file_path, 'r')
-        coords = fin['coords'][block_id]
-        points = fin['points'][block_id]
-        semIns_labels = fin['labels'][block_id]
-
-        pc = np.concatenate([coords, points[:,3:9]], axis=-1)
-        sem_labels = semIns_labels[:,0]
-        ins_labels = semIns_labels[:,1]
-
-        ## if u need to visulize data, uncomment the following lines
-        #from helper_data_plot import Plot as Plot
-        #Plot.draw_pc(pc)
-        #Plot.draw_pc_semins(pc_xyz=pc[:, 0:3], pc_semins=sem_labels, fix_color_num=13)
-        #Plot.draw_pc_semins(pc_xyz=pc[:, 0:3], pc_semins=ins_labels)
-
-        return pc, sem_labels, ins_labels
-
+    # anstatt load_raw_data_file_s3dis_block
     @staticmethod
     def load_ascii_cloud_prepared(fname):
         points = []
@@ -82,29 +61,29 @@ class Data_S3DIS:
         if len(npIns) != NUM_POINTS:
             raise ValueError("Wrong NUM_POINTS of cloud: ", fname)
  
-        print("npPoints")
-        print(type(npPoints))
-        print(npPoints.shape)
-
         #pc
         #<type 'numpy.ndarray'>
         #(4096, 9)
 
-        print("npSeg")
-        print(type(npSeg))
-        print(npSeg.shape)
+        #npPoints
+        #<type 'numpy.ndarray'>
+        #(16384, 3)
 
         #sem_labels
         #<type 'numpy.ndarray'>
         #(4096,)
 
-        print("npIns")
-        print(type(npIns))
-        print(npIns.shape)
+        #npSeg
+        #<type 'numpy.ndarray'>
+        #(16384,)
 
         #ins_labels
         #<type 'numpy.ndarray'>
         #(4096,)
+
+        #npIns
+        #<type 'numpy.ndarray'>
+        #(16384,)
 
         return npPoints, npSeg, npIns
 
@@ -148,6 +127,10 @@ class Data_S3DIS:
         min_x = np.min(pc_xyzrgb[:,0]); max_x = np.max(pc_xyzrgb[:,0])
         min_y = np.min(pc_xyzrgb[:,1]); max_y = np.max(pc_xyzrgb[:,1])
         min_z = np.min(pc_xyzrgb[:,2]); max_z = np.max(pc_xyzrgb[:,2])
+
+        print("min_x : ", min_x, " max_x: ", max_x)
+        print("min_y : ", min_y, " max_y: ", max_y)
+        print("min_z : ", min_z, " max_x: ", max_z)
 
         ori_xyz = copy.deepcopy(pc_xyzrgb[:, 0:3])  # reserved for final visualization
         use_zero_one_center = True

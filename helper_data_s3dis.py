@@ -81,30 +81,6 @@ class Data_S3DIS:
         #Plot.draw_pc_semins(pc_xyz=pc[:, 0:3], pc_semins=sem_labels, fix_color_num=13)
         #Plot.draw_pc_semins(pc_xyz=pc[:, 0:3], pc_semins=ins_labels)
 
-        print("pc")
-        print(type(pc))
-        print(pc.shape)
-
-        #pc
-        #<type 'numpy.ndarray'>
-        #(4096, 9)
-
-        print("sem_labels")
-        print(type(sem_labels))
-        print(sem_labels.shape)
-
-        #sem_labels
-        #<type 'numpy.ndarray'>
-        #(4096,)
-
-        print("ins_labels")
-        print(type(ins_labels))
-        print(ins_labels.shape)
-
-        #ins_labels
-        #<type 'numpy.ndarray'>
-        #(4096,)
-
         return pc, sem_labels, ins_labels
 
     @staticmethod
@@ -146,6 +122,10 @@ class Data_S3DIS:
         min_x = np.min(pc_xyzrgb[:,0]); max_x = np.max(pc_xyzrgb[:,0])
         min_y = np.min(pc_xyzrgb[:,1]); max_y = np.max(pc_xyzrgb[:,1])
         min_z = np.min(pc_xyzrgb[:,2]); max_z = np.max(pc_xyzrgb[:,2])
+
+        print("min_x : ", min_x, " max_x: ", max_x)
+        print("min_y : ", min_y, " max_y: ", max_y)
+        print("min_z : ", min_z, " max_x: ", max_z)
 
         ori_xyz = copy.deepcopy(pc_xyzrgb[:, 0:3])  # reserved for final visualization
         use_zero_one_center = True
