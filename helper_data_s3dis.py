@@ -81,6 +81,18 @@ class Data_S3DIS:
         #Plot.draw_pc_semins(pc_xyz=pc[:, 0:3], pc_semins=sem_labels, fix_color_num=13)
         #Plot.draw_pc_semins(pc_xyz=pc[:, 0:3], pc_semins=ins_labels)
 
+        print("pc")
+        print(type(pc))
+        print(pc.shape)
+
+        print("sem_labels")
+        print(type(sem_labels))
+        print(sem_labels.shape)
+
+        print("ins_labels")
+        print(type(ins_labels))
+        print(ins_labels.shape)
+
         return pc, sem_labels, ins_labels
 
     @staticmethod
@@ -148,13 +160,15 @@ class Data_S3DIS:
     def load_train_next_batch(self):
         bat_files = self.train_files[self.train_next_bat_index*self.train_batch_size:(self.train_next_bat_index+1)*self.train_batch_size]
         print("Bat_files: " , len(bat_files))
-        print(bat_files)
+
         bat_pc=[]
         bat_sem_labels=[]
         bat_ins_labels=[]
         bat_psem_onehot_labels =[]
         bat_bbvert_padded_labels=[]
         bat_pmask_padded_labels =[]
+
+
         for file in bat_files:
             pc, sem_labels, ins_labels, psem_onehot_labels, bbvert_padded_labels, pmask_padded_labels = Data_S3DIS.load_fixed_points(file)
             bat_pc.append(pc)
