@@ -104,12 +104,12 @@ class Data_S3DIS:
             ins_labels_tp = np.reshape(ins_labels_tp, [-1])
             gt_pmask[count,:] = ins_labels_tp
 
-            print(ins_labels_tp.shape)
+            #print(ins_labels_tp.shape)
         
             ins_labels_tp_ind = np.argwhere(ins_labels_tp == 1)
             ins_labels_tp_ind = np.reshape(ins_labels_tp_ind, [-1])
 
-            print(ins_labels_tp_ind.shape)
+            #print(ins_labels_tp_ind.shape)
 
             ###### bb min_xyz, max_xyz
             pc_xyz_tp = pc[:, 0:3]
@@ -164,7 +164,6 @@ class Data_S3DIS:
 
     def load_train_next_batch(self):
         bat_files = self.train_files[self.train_next_bat_index*self.train_batch_size:(self.train_next_bat_index+1)*self.train_batch_size]
-        print("Bat_files: " , len(bat_files))
 
         bat_pc=[]
         bat_sem_labels=[]
