@@ -18,7 +18,7 @@ class Data_Configs:
     sem_names = ['person', 'dog', 'bicycle', 'sportsball']
     sem_ids = [0,1,2,3]
 
-    points_cc = 9 #3?
+    points_cc = 3 #3?
     sem_num = len(sem_names)
     ins_max_num = 24 #48
     # train_pts_num = 16384
@@ -104,12 +104,12 @@ class Data_S3DIS:
         # testarray2 = np.zeros_like(npPoints)
         # testarray3 = np.concatenate([testarray1, testarray2], axis=-1)
 
-        testarray1 = np.random.rand(npPoints.shape[0],npPoints.shape[1])
-        testarray2 = np.random.rand(npPoints.shape[0],npPoints.shape[1])
-        testarray3 = np.concatenate([testarray1, testarray2], axis=-1)
+        #testarray1 = np.random.rand(npPoints.shape[0],npPoints.shape[1])
+        #testarray2 = np.random.rand(npPoints.shape[0],npPoints.shape[1])
+        #testarray3 = np.concatenate([testarray1, testarray2], axis=-1)
         
         
-        npPoints = np.concatenate([npPoints, testarray3], axis=-1)
+        #npPoints = np.concatenate([npPoints, testarray3], axis=-1)
         print("npPoints")
         print(npPoints.shape)
 
