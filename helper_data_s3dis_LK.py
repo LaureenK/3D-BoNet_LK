@@ -17,7 +17,7 @@ class Data_Configs:
     sem_names = ['person', 'dog', 'bicycle', 'sportsball']
     sem_ids = [0,1,2,3]
 
-    points_cc = 3 #3?
+    points_cc = 9 #3?
     sem_num = len(sem_names)
     ins_max_num = 24 #48
     train_pts_num = 16384
@@ -91,6 +91,14 @@ class Data_S3DIS:
         #npIns
         #<type 'numpy.ndarray'>
         #(16384,)
+
+        testarray1 = np.zeros_like(npPoints)
+        testarray2 = np.zeros_like(npPoints)
+        testarray3 = np.concatenate([testarray1, testarray2], axis=-1)
+        
+        npPoints = np.concatenate([npPoints, testarray3], axis=-1)
+        print("npPoints")
+        print(npPoints.shape)
 
         return npPoints, npSeg, npIns
 
