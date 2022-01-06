@@ -64,11 +64,12 @@ class BoNet:
 
 	def backbone_pointnet2(self, X_pc, is_train=None):
 		import helper_pointnet2 as pnet2
-		points_num = tf.shape(X_pc)[1]
+		#points_num = tf.shape(X_pc)[1]
+		points_num = X_pc.get_shape()[1].value
+
 		print("1:points_num: ", points_num)
-		print(type(X_pc))
-		print(X_pc.shape[1])
-		print(X_pc.get_shape()[1].value)
+		#print(X_pc.shape[1])
+		#print(X_pc.get_shape()[1].value)
 		
 		#l0_xyz = X_pc[:,:,0:3]
 		#l0_points = X_pc[:,:,3:9]
