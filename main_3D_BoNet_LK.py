@@ -8,6 +8,7 @@ class BoNet:
 		self.points_cc = configs.points_cc
 		self.sem_num = configs.sem_num
 		self.bb_num = configs.ins_max_num
+		self.points_num = configs.train_pts_num
 
 	def creat_folders(self, name='log', re_train=False):
 		self.train_mod_dir = './'+name+'/train_mod/'
@@ -64,7 +65,10 @@ class BoNet:
 		import helper_pointnet2 as pnet2
 		points_num = tf.shape(X_pc)[1]
 		print("1:points_num: ", points_num)
+		print(type(X_pc))
 		print(X_pc.shape[1])
+		print(X_pc.get_shape()[1].value)
+		
 		#l0_xyz = X_pc[:,:,0:3]
 		#l0_points = X_pc[:,:,3:9]
 
