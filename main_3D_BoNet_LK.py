@@ -9,6 +9,7 @@ class BoNet:
 		self.sem_num = configs.sem_num
 		self.bb_num = configs.ins_max_num
 		self.points_num = configs.train_pts_num
+		self.batchsize = configs.batchsize
 
 	def creat_folders(self, name='log', re_train=False):
 		self.train_mod_dir = './'+name+'/train_mod/'
@@ -171,7 +172,7 @@ class BoNet:
 	######
 	def build_graph(self, GPU='0'):
 		#######   1. define inputs
-		self.X_pc = tf.placeholder(shape=[None, None, self.points_cc], dtype=tf.float32, name='X_pc')
+		self.X_pc = tf.placeholder(shape=[self.batchsize, self.points_num, self.points_cc], dtype=tf.float32, name='X_pc')
 		self.Y_bbvert = tf.placeholder(shape=[None, self.bb_num, 2, 3], dtype=tf.float32, name='Y_bbvert')
 		self.Y_pmask = tf.placeholder(shape=[None, self.bb_num, None], dtype=tf.float32, name='Y_pmask')
 		self.Y_psem = tf.placeholder(shape=[None, None, self.sem_num], dtype=tf.float32, name='Y_psem')
