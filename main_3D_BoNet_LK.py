@@ -228,7 +228,7 @@ class BoNet:
 		#minize
 
 		######   4. others
-		print(Ops.variable_count())
+		print("Ops.variable_count(): ", Ops.variable_count())
 		self.saver = tf.train.Saver(max_to_keep=20)
 		config = tf.ConfigProto(allow_soft_placement=True)
 		config.gpu_options.visible_device_list = GPU
