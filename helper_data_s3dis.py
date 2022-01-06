@@ -163,6 +163,30 @@ class Data_S3DIS:
             sem_idx = Data_Configs.sem_ids.index(s)
             psem_onehot_labels[idx, sem_idx] =1
 
+        min_x = np.min(pc_xyzrgb[:,0]); max_x = np.max(pc_xyzrgb[:,0])
+        min_y = np.min(pc_xyzrgb[:,1]); max_y = np.max(pc_xyzrgb[:,1])
+        min_z = np.min(pc_xyzrgb[:,2]); max_z = np.max(pc_xyzrgb[:,2])
+
+        min_x1 = np.min(pc_xyzrgb[:,3]); max_x1 = np.max(pc_xyzrgb[:,3])
+        min_y1 = np.min(pc_xyzrgb[:,4]); max_y1 = np.max(pc_xyzrgb[:,4])
+        min_z1 = np.min(pc_xyzrgb[:,5]); max_z1 = np.max(pc_xyzrgb[:,5])
+
+        min_x2 = np.min(pc_xyzrgb[:,6]); max_x2 = np.max(pc_xyzrgb[:,6])
+        min_y2 = np.min(pc_xyzrgb[:,7]); max_y2 = np.max(pc_xyzrgb[:,7])
+        min_z2 = np.min(pc_xyzrgb[:,8]); max_z2 = np.max(pc_xyzrgb[:,8])
+
+        print("min_x: ", min_x, " max_x: ", max_x)
+        print("min_y: ", min_y, " max_y: ", max_y)
+        print("min_z: ", min_z, " max_z: ", max_z)
+
+        print("min_x1: ", min_x1, " max_x1: ", max_x1)
+        print("min_y1: ", min_y1, " max_y1: ", max_y1)
+        print("min_z1: ", min_z1, " max_z1: ", max_z1)
+
+        print("min_x2: ", min_x2, " max_x2: ", max_x2)
+        print("min_y2: ", min_y2, " max_y2: ", max_y2)
+        print("min_z2: ", min_z2, " max_z2: ", max_z2)
+
         return pc_xyzrgb, sem_labels, ins_labels, psem_onehot_labels, bbvert_padded_labels, pmask_padded_labels
 
     def load_train_next_batch(self):
