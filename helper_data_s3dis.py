@@ -127,6 +127,9 @@ class Data_S3DIS:
     def load_fixed_points(file_path):
         pc_xyzrgb, sem_labels, ins_labels = Data_S3DIS.load_raw_data_file_s3dis_block(file_path)
 
+        print("pc_xyzrgb")
+        print(pc_xyzrgb.shape)
+
         ### center xy within the block zwischen 0 und 1
         min_x = np.min(pc_xyzrgb[:,0]); max_x = np.max(pc_xyzrgb[:,0])
         min_y = np.min(pc_xyzrgb[:,1]); max_y = np.max(pc_xyzrgb[:,1])
