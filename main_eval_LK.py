@@ -158,7 +158,7 @@ class Evaluation:
 
 	@staticmethod
 	def evaluation(dataset_path, train_areas, result_path):
-		from helper_data_s3dis import Data_Configs as Data_Configs
+		from helper_data_s3dis_LK import Data_Configs as Data_Configs
 		configs = Data_Configs()
 		mean_insSize_by_sem = Eval_Tools.get_mean_insSize_by_sem(dataset_path, train_areas)
 
