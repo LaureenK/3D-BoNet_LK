@@ -73,8 +73,6 @@ class Data_S3DIS:
         npSeg = npSeg[0:NUM_POINTS,:]
         npIns = npIns[0:NUM_POINTS,:]
 
-        X_pc[:,:,0:3]
-
         if len(npIns) != NUM_POINTS:
             raise ValueError("Wrong NUM_POINTS of cloud: ", fname)
  
