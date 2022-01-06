@@ -63,8 +63,11 @@ class BoNet:
 	def backbone_pointnet2(self, X_pc, is_train=None):
 		import helper_pointnet2 as pnet2
 		points_num = tf.shape(X_pc)[1]
-		l0_xyz = X_pc[:,:,0:3]
-		l0_points = X_pc[:,:,3:9]
+		#l0_xyz = X_pc[:,:,0:3]
+		#l0_points = X_pc[:,:,3:9]
+
+		l0_xyz = X_pc[:, :, :3]
+		l0_points = X_pc[:, :, 3:]
 
 		radius1 = 2
 		radius2 = 4
