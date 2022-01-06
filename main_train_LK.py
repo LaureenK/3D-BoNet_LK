@@ -88,5 +88,5 @@ if __name__=='__main__':
 	train_dataset_path = '/hdd/klein/prepared/TrainFiles'
 	test_dataset_path = '/hdd/klein/prepared/TestFiles'
 
-	data = Data(train_dataset_path, test_dataset_path, train_batch_size=4)
+	data = Data(train_dataset_path, test_dataset_path, train_batch_size=2)
 	train(net, data)

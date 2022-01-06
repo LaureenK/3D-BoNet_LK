@@ -176,6 +176,7 @@ class BoNet:
 		self.X_pc = tf.placeholder(shape=[self.batchsize, self.points_num, self.points_cc], dtype=tf.float32, name='X_pc')
 		self.Y_bbvert = tf.placeholder(shape=[None, self.bb_num, 2, 3], dtype=tf.float32, name='Y_bbvert')
 		self.Y_pmask = tf.placeholder(shape=[None, self.bb_num, None], dtype=tf.float32, name='Y_pmask')
+		
 		self.Y_psem = tf.placeholder(shape=[None, None, self.sem_num], dtype=tf.float32, name='Y_psem')
 		self.is_train = tf.placeholder(dtype=tf.bool, name='is_train')
 		self.lr = tf.placeholder(dtype=tf.float32, name='lr')

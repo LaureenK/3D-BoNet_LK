@@ -26,7 +26,7 @@ class Data_Configs:
 
     train_pts_num = NUM_POINTS
     test_pts_num = NUM_POINTS
-    batchsize = 4
+    batchsize = 2
 
 class Data_S3DIS:
     def __init__(self, train_dataset_path, test_dataset_path, train_batch_size=8):
