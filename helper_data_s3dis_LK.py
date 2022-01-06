@@ -6,7 +6,8 @@ import copy
 from random import shuffle
 import h5py
 
-NUM_POINTS = 2**14
+#NUM_POINTS = 2**14
+NUM_POINTS = 2**12
 
 def unison_shuffled_copies(a, b, c):
     assert len(a) == len(b) == len(c)
@@ -20,8 +21,11 @@ class Data_Configs:
     points_cc = 9 #3?
     sem_num = len(sem_names)
     ins_max_num = 24 #48
-    train_pts_num = 16384
-    test_pts_num = 16384 #??
+    # train_pts_num = 16384
+    # test_pts_num = 16384 
+
+    train_pts_num = 4096
+    test_pts_num = 4096
 
 class Data_S3DIS:
     def __init__(self, train_dataset_path, test_dataset_path, train_batch_size=8):
@@ -64,6 +68,12 @@ class Data_S3DIS:
         npIns = np.array(instances, dtype=np.uint16)
 
         npPoints, npSeg, npIns = unison_shuffled_copies(npPoints, npSeg, npIns)
+
+        npPoints = npPoints[0:NUM_POINTS,:]
+        npSeg = npSeg[0:NUM_POINTS,:]
+        npIns = npIns[0:NUM_POINTS,:]
+
+        X_pc[:,:,0:3]
 
         if len(npIns) != NUM_POINTS:
             raise ValueError("Wrong NUM_POINTS of cloud: ", fname)
