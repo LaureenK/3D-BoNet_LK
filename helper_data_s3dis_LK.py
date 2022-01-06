@@ -7,7 +7,7 @@ from random import shuffle
 import h5py
 
 #NUM_POINTS = 2**14
-NUM_POINTS = 2**12
+NUM_POINTS = 2**13
 
 def unison_shuffled_copies(a, b, c):
     assert len(a) == len(b) == len(c)
@@ -24,8 +24,8 @@ class Data_Configs:
     # train_pts_num = 16384
     # test_pts_num = 16384 
 
-    train_pts_num = 4096
-    test_pts_num = 4096
+    train_pts_num = NUM_POINTS
+    test_pts_num = NUM_POINTS
 
 class Data_S3DIS:
     def __init__(self, train_dataset_path, test_dataset_path, train_batch_size=8):
