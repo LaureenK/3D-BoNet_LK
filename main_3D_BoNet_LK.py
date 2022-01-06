@@ -6,7 +6,6 @@ from helper_net import Ops as Ops
 class BoNet:
 	def __init__(self, configs):
 		self.points_cc = configs.points_cc
-		print("2:points_cc: ", self.points_cc)
 		self.sem_num = configs.sem_num
 		self.bb_num = configs.ins_max_num
 
@@ -65,6 +64,7 @@ class BoNet:
 		import helper_pointnet2 as pnet2
 		points_num = tf.shape(X_pc)[1]
 		print("1:points_num: ", points_num)
+		print(X_pc.shape[1])
 		#l0_xyz = X_pc[:,:,0:3]
 		#l0_points = X_pc[:,:,3:9]
 
