@@ -70,8 +70,8 @@ class Data_S3DIS:
         npPoints, npSeg, npIns = unison_shuffled_copies(npPoints, npSeg, npIns)
 
         npPoints = npPoints[0:NUM_POINTS,:]
-        npSeg = npSeg[0:NUM_POINTS,:]
-        npIns = npIns[0:NUM_POINTS,:]
+        npSeg = npSeg[0:NUM_POINTS]
+        npIns = npIns[0:NUM_POINTS]
 
         if len(npIns) != NUM_POINTS:
             raise ValueError("Wrong NUM_POINTS of cloud: ", fname)
