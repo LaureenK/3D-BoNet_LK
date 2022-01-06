@@ -96,8 +96,8 @@ class Data_S3DIS:
         # testarray2 = np.zeros_like(npPoints)
         # testarray3 = np.concatenate([testarray1, testarray2], axis=-1)
 
-        testarray1 = np.random.rand(npPoints.shape)
-        testarray2 = np.random.rand(npPoints.shape)
+        testarray1 = np.random.rand(npPoints.shape[0],npPoints.shape[1])
+        testarray2 = np.random.rand(npPoints.shape[0],npPoints.shape[1])
         testarray3 = np.concatenate([testarray1, testarray2], axis=-1)
         
         
