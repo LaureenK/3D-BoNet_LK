@@ -110,8 +110,8 @@ class Data_S3DIS:
         #npPoints = np.concatenate([npPoints, testarray3], axis=-1)
 
 
-        print("npPoints")
-        print(npPoints.shape)
+        #print("npPoints")
+        #print(npPoints.shape)
 
         return npPoints, npSeg, npIns
 
