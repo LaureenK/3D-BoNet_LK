@@ -212,6 +212,7 @@ class BoNet:
 
 		end_2_end_loss = self.bbvert_loss + self.bbscore_loss  + self.pmask_loss + self.psemce_loss
 		self.optim = tf.train.AdamOptimizer(learning_rate=self.lr).minimize(end_2_end_loss, var_list = var_bbox+var_pmask +var_backbone+ var_sem)
+		#minize
 
 		######   4. others
 		print(Ops.variable_count())
