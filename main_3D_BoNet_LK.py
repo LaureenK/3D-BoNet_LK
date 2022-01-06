@@ -8,8 +8,6 @@ class BoNet:
 		self.points_cc = configs.points_cc
 		self.sem_num = configs.sem_num
 		self.bb_num = configs.ins_max_num
-		self.points_num = configs.train_pts_num
-		self.batchsize = configs.batchsize
 
 	def creat_folders(self, name='log', re_train=False):
 		self.train_mod_dir = './'+name+'/train_mod/'
@@ -64,8 +62,8 @@ class BoNet:
 
 	def backbone_pointnet2(self, X_pc, is_train=None):
 		import helper_pointnet2 as pnet2
-		#points_num = tf.shape(X_pc)[1]
-		points_num = X_pc.get_shape()[1].value
+		points_num = tf.shape(X_pc)[1]
+		#points_num = X_pc.get_shape()[1].value
 
 		print("1:points_num: ", points_num)
 		#print(X_pc.shape[1])
@@ -173,7 +171,7 @@ class BoNet:
 	######
 	def build_graph(self, GPU='0'):
 		#######   1. define inputs
-		self.X_pc = tf.placeholder(shape=[self.batchsize, self.points_num, self.points_cc], dtype=tf.float32, name='X_pc')
+		self.X_pc = tf.placeholder(shape=[None, None, self.points_cc], dtype=tf.float32, name='X_pc')
 		self.Y_bbvert = tf.placeholder(shape=[None, self.bb_num, 2, 3], dtype=tf.float32, name='Y_bbvert')
 		self.Y_pmask = tf.placeholder(shape=[None, self.bb_num, None], dtype=tf.float32, name='Y_pmask')
 		

@@ -7,7 +7,7 @@ from random import shuffle
 import h5py
 
 #NUM_POINTS = 2**14
-NUM_POINTS = 2**13
+NUM_POINTS = 2**14
 
 def unison_shuffled_copies(a, b, c):
     assert len(a) == len(b) == len(c)
