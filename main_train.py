@@ -11,6 +11,9 @@ def train(net, data):
 			###### training
 			bat_pc, _, _, bat_psem_onehot, bat_bbvert, bat_pmask = data.load_train_next_batch()
 
+			print("bat_pc")
+			print(bat_pc.shape)
+
 			# print("bat_pc[:, :, 0:9]")
 			# print(type(bat_pc[:, :, 0:9]))
 			# print(bat_pc[:, :, 0:9].shape)
