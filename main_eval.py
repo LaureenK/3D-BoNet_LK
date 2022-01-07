@@ -128,6 +128,10 @@ class Evaluation:
 		test_files = data.test_files
 		print('total_test_batch_num_sq', len(test_files))
 		scene_list_dic = Eval_Tools.get_scene_list(test_files)
+
+		print(len(scene_list_dic))
+		print(scene_list_dic)
+
 		for scene_name in scene_list_dic:
 			print('test scene:', scene_name)
 			scene_result = {}

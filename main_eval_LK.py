@@ -127,17 +127,19 @@ class Evaluation:
 	def ttest(net, data, result_path, test_batch_size=1):
 		test_files = data.test_files
 		print('total_test_batch_num_sq', len(test_files))
-		scene_list_dic = Eval_Tools.get_scene_list(test_files)
-		for scene_name in scene_list_dic:
+		scene_list_dic = Eval_Tools.get_scene_list(test_files) #? weg
+
+		for scene_name in scene_list_dic: #fuer jede testfile?
 			print('test scene:', scene_name)
 			scene_result = {}
-			scene_files = scene_list_dic[scene_name]
+			scene_files = scene_list_dic[scene_name]  #hole alle files der scene?
+			
 			for k in range(0, len(scene_files), test_batch_size):
 				t_files = scene_files[k: k+test_batch_size]
 				bat_pc, bat_sem_gt, bat_ins_gt, bat_psem_onehot, bat_bbvert, bat_pmask, bat_files = data.load_test_next_batch_sq(bat_files=t_files)
 
 				[y_psem_pred_sq_raw, y_bbvert_pred_sq_raw, y_bbscore_pred_sq_raw, y_pmask_pred_sq_raw] = \
-				net.sess.run([net.y_psem_pred, net.y_bbvert_pred_raw, net.y_bbscore_pred_raw, net.y_pmask_pred_raw],feed_dict={net.X_pc: bat_pc[:, :, 0:9], net.is_train: False})
+				net.sess.run([net.y_psem_pred, net.y_bbvert_pred_raw, net.y_bbscore_pred_raw, net.y_pmask_pred_raw],feed_dict={net.X_pc: bat_pc[:, :, 0:3], net.is_train: False})
 
 				for b in range(len(t_files)):
 					pc = np.asarray(bat_pc[b], dtype=np.float16)
@@ -155,6 +157,8 @@ class Evaluation:
 			if len(scene_result)!=len(scene_files): print('file testing error'); exit()
 			if not os.path.exists(result_path + 'res_by_scene/'): os.makedirs(result_path + 'res_by_scene/')
 			scipy.io.savemat(result_path + 'res_by_scene/' + scene_name + '.mat', scene_result, do_compression=True)
+
+			scipy.io.savemat(file_name, mdict, appendmat=True, format='5', long_field_names=False, do_compression=False, oned_as='row')
 
 	@staticmethod
 	def evaluation(dataset_path, train_areas, result_path):
@@ -175,6 +179,7 @@ class Evaluation:
 			scene_result = scipy.io.loadmat(result_path+'res_by_scene/'+scene_name, verify_compressed_data_integrity=False)
 
 			pc_all = []; ins_gt_all = []; sem_pred_all = []; sem_gt_all = []
+			## block merging?
 			gap = 5e-3
 			volume_num = int(1. / gap) + 2
 			volume = -1 * np.ones([volume_num, volume_num, volume_num]).astype(np.int32)
@@ -194,6 +199,7 @@ class Evaluation:
 				pmask_pred = pmask_pred_raw * np.tile(bbscore_pred_raw[:, None], [1, pmask_pred_raw.shape[-1]])
 				ins_pred = np.argmax(pmask_pred, axis=-2)
 				ins_sem_dic = Eval_Tools.get_sem_for_ins(ins_by_pts=ins_pred, sem_by_pts=sem_pred)
+				## Block Merging
 				Eval_Tools.BlockMerging(volume, volume_sem, pc[:, 6:9], ins_pred, ins_sem_dic, gap)
 
 				pc_all.append(pc)
