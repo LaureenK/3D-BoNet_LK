@@ -1,16 +1,12 @@
 import os
 
-import tensorflow as tf
-tf.logging.set_verbosity(tf.logging.ERROR)
-
-from log_util import get_logger
-
-logger = get_logger(__file__, './log/', 'log_train.txt')
+import logging
+logging.basicConfig(format='%(asctime)s %(message)s')
 
 def train(net, data):
 	for ep in range(0, 2,1):
 		print('#################################################')
-		logger.info('Start epoch ', ep)
+		logging.warning('Start epoch %d' % ep)
 
 		l_rate = max(0.0005/(2**(ep//20)), 0.00001)
 
@@ -78,8 +74,8 @@ def train(net, data):
 
 				#Evaluation.evaluation(dataset_path, train_areas, result_path)
 				print('full eval finished!')
-				
-		logger.info('End epoch ', ep)
+
+		logging.warning('End epoch %d' % ep)
 
 
 ############
