@@ -126,18 +126,22 @@ class Evaluation:
 	@staticmethod
 	def ttest(net, data, result_path, test_batch_size=1):
 		test_files = data.test_files
-		print('total_test_batch_num_sq', len(test_files))
+		#print('total_test_batch_num_sq', len(test_files))
 		scene_list_dic = Eval_Tools.get_scene_list(test_files)
 
-		print(len(scene_list_dic))
-		print(scene_list_dic)
+		#print(len(scene_list_dic))
+		#print(scene_list_dic)
 
-		# for scene_name in scene_list_dic:
-		# 	print('test scene:', scene_name)
-		# 	scene_result = {}
-		# 	scene_files = scene_list_dic[scene_name]
-		# 	for k in range(0, len(scene_files), test_batch_size):
-		# 		t_files = scene_files[k: k+test_batch_size]
+		for scene_name in scene_list_dic:
+			print('test scene:', scene_name)
+			scene_result = {}
+			scene_files = scene_list_dic[scene_name]
+			for k in range(0, len(scene_files), test_batch_size):
+				t_files = scene_files[k: k+test_batch_size]
+				print(k)
+				print(len(t_files))
+				print(t_files)
+
 		# 		bat_pc, bat_sem_gt, bat_ins_gt, bat_psem_onehot, bat_bbvert, bat_pmask, bat_files = data.load_test_next_batch_sq(bat_files=t_files)
 
 		# 		[y_psem_pred_sq_raw, y_bbvert_pred_sq_raw, y_bbscore_pred_sq_raw, y_pmask_pred_sq_raw] = \
