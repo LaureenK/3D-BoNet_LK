@@ -1,7 +1,7 @@
 import os
 
 import logging
-logging.basicConfig(format='%(asctime)s %(message)s', level=logging.DEBUG)
+logging.basicConfig(format='%(asctime)s %(message)s', level=logging.INFO)
 
 def train(net, data):
 	for ep in range(0, 1,1):
