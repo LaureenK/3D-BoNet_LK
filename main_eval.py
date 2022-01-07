@@ -140,9 +140,9 @@ class Evaluation:
 			for k in range(0, len(scene_files), test_batch_size):
 				#20 Dateien
 				t_files = scene_files[k: k+test_batch_size]
-				print(k)
-				print(len(t_files))
-				print(t_files)
+				#print(k)
+				#print(len(t_files))
+				#print(t_files)
 
 				#lade daten von 20 dateien
 				bat_pc, bat_sem_gt, bat_ins_gt, bat_psem_onehot, bat_bbvert, bat_pmask, bat_files = data.load_test_next_batch_sq(bat_files=t_files)
