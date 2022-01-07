@@ -127,38 +127,44 @@ class Evaluation:
 	def ttest(net, data, result_path, test_batch_size=1):
 		test_files = data.test_files
 		print('total_test_batch_num_sq', len(test_files))
-		scene_list_dic = Eval_Tools.get_scene_list(test_files) #? weg
+		
+		scene_result = {}
+		for file in test_files:
+			#vielleicht liste
+			bat_pc, bat_sem_gt, bat_ins_gt, bat_psem_onehot, bat_bbvert, bat_pmask, bat_files = data.load_test_next_batch_sq(bat_files=file)
 
-		for scene_name in scene_list_dic: #fuer jede testfile?
-			print('test scene:', scene_name)
-			scene_result = {}
-			scene_files = scene_list_dic[scene_name]  #hole alle files der scene?
-			
-			for k in range(0, len(scene_files), test_batch_size):
-				t_files = scene_files[k: k+test_batch_size]
-				bat_pc, bat_sem_gt, bat_ins_gt, bat_psem_onehot, bat_bbvert, bat_pmask, bat_files = data.load_test_next_batch_sq(bat_files=t_files)
+			[y_psem_pred_sq_raw, y_bbvert_pred_sq_raw, y_bbscore_pred_sq_raw, y_pmask_pred_sq_raw] = \
+			net.sess.run([net.y_psem_pred, net.y_bbvert_pred_raw, net.y_bbscore_pred_raw, net.y_pmask_pred_raw],feed_dict={net.X_pc: bat_pc[:, :, 0:3], net.is_train: False})
 
-				[y_psem_pred_sq_raw, y_bbvert_pred_sq_raw, y_bbscore_pred_sq_raw, y_pmask_pred_sq_raw] = \
-				net.sess.run([net.y_psem_pred, net.y_bbvert_pred_raw, net.y_bbscore_pred_raw, net.y_pmask_pred_raw],feed_dict={net.X_pc: bat_pc[:, :, 0:3], net.is_train: False})
+			pc = np.asarray(bat_pc[0], dtype=np.float16)
+			sem_gt = np.asarray(bat_sem_gt[0], dtype=np.int16)
+			ins_gt = np.asarray(bat_ins_gt[0], dtype=np.int32)
 
-				for b in range(len(t_files)):
-					pc = np.asarray(bat_pc[b], dtype=np.float16)
-					sem_gt = np.asarray(bat_sem_gt[b], dtype=np.int16)
-					ins_gt = np.asarray(bat_ins_gt[b], dtype=np.int32)
-					sem_pred_raw = np.asarray(y_psem_pred_sq_raw[b], dtype=np.float16)
-					bbvert_pred_raw = np.asarray(y_bbvert_pred_sq_raw[b], dtype=np.float16)
-					bbscore_pred_raw = np.asarray(y_bbscore_pred_sq_raw[b], dtype=np.float16)
-					pmask_pred_raw = np.asarray(y_pmask_pred_sq_raw[b], dtype=np.float16)
+			print('pc: ', pc.shape)
+			print('sem_gt: ', sem_gt.shape)
+			print('ins_gt: ', ins_gt.shape)
 
-					block_name = t_files[b][-len('0000'):]
-					scene_result['block_'+block_name]={'pc':pc, 'sem_gt':sem_gt, 'ins_gt':ins_gt, 'sem_pred_raw':sem_pred_raw,
-					'bbvert_pred_raw':bbvert_pred_raw, 'bbscore_pred_raw':bbscore_pred_raw,'pmask_pred_raw':pmask_pred_raw}
-			###
-			if len(scene_result)!=len(scene_files): print('file testing error'); exit()
-			if not os.path.exists(result_path + 'res_by_scene/'): os.makedirs(result_path + 'res_by_scene/')
-			scipy.io.savemat(result_path + 'res_by_scene/' + scene_name + '.mat', scene_result, do_compression=True)
+			sem_pred_raw = np.asarray(y_psem_pred_sq_raw[0], dtype=np.float16)
+			bbvert_pred_raw = np.asarray(y_bbvert_pred_sq_raw[0], dtype=np.float16)
+			bbscore_pred_raw = np.asarray(y_bbscore_pred_sq_raw[0], dtype=np.float16)
+			pmask_pred_raw = np.asarray(y_pmask_pred_sq_raw[0], dtype=np.float16)
 
-			scipy.io.savemat(file_name, mdict, appendmat=True, format='5', long_field_names=False, do_compression=False, oned_as='row')
+			print('sem_pred_raw: ', sem_pred_raw.shape)
+			print('bbvert_pred_raw: ', bbvert_pred_raw.shape)
+			print('bbscore_pred_raw: ', bbscore_pred_raw.shape)
+			print('pmask_pred_raw: ', pmask_pred_raw.shape)
+
+			block_name = file
+			scene_result['file_'+block_name]={'pc':pc, 'sem_gt':sem_gt, 'ins_gt':ins_gt, 'sem_pred_raw':sem_pred_raw,'bbvert_pred_raw':bbvert_pred_raw, 'bbscore_pred_raw':bbscore_pred_raw,'pmask_pred_raw':pmask_pred_raw}
+		
+		
+		###
+		if len(scene_result)!=len(test_files): print('file testing error'); exit()
+
+		if not os.path.exists(result_path + 'res_by_file/'): os.makedirs(result_path + 'res_by_scene/')
+		scipy.io.savemat(result_path + 'res_by_file/allFiles.mat', scene_result, do_compression=True)
+
+		
 
 	@staticmethod
 	def evaluation(dataset_path, train_areas, result_path):

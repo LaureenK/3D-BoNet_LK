@@ -245,6 +245,7 @@ class Data_S3DIS:
         return bat_pc, bat_sem_labels, bat_ins_labels, bat_psem_onehot_labels, bat_bbvert_padded_labels, bat_pmask_padded_labels
     
     def load_test_next_batch_sq(self, bat_files):
+        #wenn nur eine Datei, dann wird nur eine Datei geladen aus batch_files
         bat_pc=[]
         bat_sem_labels=[]
         bat_ins_labels=[]
