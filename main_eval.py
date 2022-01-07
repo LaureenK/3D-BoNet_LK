@@ -177,10 +177,10 @@ class Evaluation:
 					#dictonary blockname is key
 					scene_result['block_'+block_name]={'pc':pc, 'sem_gt':sem_gt, 'ins_gt':ins_gt, 'sem_pred_raw':sem_pred_raw,
 					'bbvert_pred_raw':bbvert_pred_raw, 'bbscore_pred_raw':bbscore_pred_raw,'pmask_pred_raw':pmask_pred_raw}
-		# 	###
-		# 	if len(scene_result)!=len(scene_files): print('file testing error'); exit()
-		# 	if not os.path.exists(result_path + 'res_by_scene/'): os.makedirs(result_path + 'res_by_scene/')
-		# 	scipy.io.savemat(result_path + 'res_by_scene/' + scene_name + '.mat', scene_result, do_compression=True)
+			###
+			if len(scene_result)!=len(scene_files): print('file testing error'); exit()
+			if not os.path.exists(result_path + 'res_by_scene/'): os.makedirs(result_path + 'res_by_scene/')
+			scipy.io.savemat(result_path + 'res_by_scene/' + scene_name + '.mat', scene_result, do_compression=True)
 
 	@staticmethod
 	def evaluation(dataset_path, train_areas, result_path):
