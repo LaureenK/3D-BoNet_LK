@@ -205,7 +205,10 @@ class Evaluation:
 			#volume_sem = -1 * np.ones([volume_num, volume_num, volume_num]).astype(np.int32)
 
 			print("key count: ", len(scene_result))
-			print(scene_result)
+			print(scene_result[0])
+			print(scene_result[1])
+			print(scene_result[2])
+			print(scene_result[3])
 			for i in range(len(scene_result)):
 				block = 'file_'+ file_name
 				if block not in scene_result: continue
@@ -218,17 +221,17 @@ class Evaluation:
 				pmask_pred_raw = scene_result[block][0]['pmask_pred_raw'][0]
 				sem_pred_raw = scene_result[block][0]['sem_pred_raw'][0]
 
-				print("pc shape: ", pc.shape)
-				print("ins_gt shape: ", ins_gt.shape)
-				print("sem_gt: ", sem_gt.shape)
+				# print("pc shape: ", pc.shape)
+				# print("ins_gt shape: ", ins_gt.shape)
+				# print("sem_gt: ", sem_gt.shape)
 
 				sem_pred = np.argmax(sem_pred_raw, axis=-1)
 				pmask_pred = pmask_pred_raw * np.tile(bbscore_pred_raw[:, None], [1, pmask_pred_raw.shape[-1]])
 				ins_pred = np.argmax(pmask_pred, axis=-2)
 
-				print("sem_pred shape: ", sem_pred.shape)
-				print("pmask_pred shape: ", pmask_pred.shape)
-				print("ins_pred: ", ins_pred.shape)
+				# print("sem_pred shape: ", sem_pred.shape)
+				# print("pmask_pred shape: ", pmask_pred.shape)
+				# print("ins_pred: ", ins_pred.shape)
 
 				#ins_sem_dic = Eval_Tools.get_sem_for_ins(ins_by_pts=ins_pred, sem_by_pts=sem_pred)
 				
@@ -239,7 +242,7 @@ class Evaluation:
 				ins_gt_all.append(ins_gt)
 				sem_pred_all.append(sem_pred)
 				sem_gt_all.append(sem_gt)
-				print('pc_all: ',len(pc_all))
+				#print('pc_all: ',len(pc_all))
 			##
 			pc_all = np.concatenate(pc_all, axis=0)
 			ins_gt_all = np.concatenate(ins_gt_all, axis=0)
