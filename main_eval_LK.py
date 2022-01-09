@@ -5,6 +5,7 @@ import scipy.io
 import tensorflow as tf
 import glob
 import h5py
+import helper_data_s3dis_LK
 
 class Eval_Tools:
 	@staticmethod
@@ -62,30 +63,30 @@ class Eval_Tools:
 		return finalgrouplabel
 
 	@staticmethod
-	def get_mean_insSize_by_sem(dataset_path, train_areas):
-		from helper_data_s3dis import Data_Configs as Data_Configs
+	def get_mean_insSize_by_sem(train_dataset_path):
+		from helper_data_s3dis_LK import Data_Configs as Data_Configs
+		from helper_data_s3dis_LK import load_ascii_cloud_prepared
 		configs = Data_Configs()
 
 		mean_insSize_by_sem = {}
 		for sem in configs.sem_ids: mean_insSize_by_sem[sem] = []
 
-		for a in train_areas:
-			print('get mean insSize, check train area:', a)
-			files = sorted(glob.glob(dataset_path + a + '*.h5'))
-			for file_path in files:
-				fin = h5py.File(file_path, 'r')
-				semIns_labels = fin['labels'][:].reshape([-1, 2])
-				ins_labels = semIns_labels[:, 1]
-				sem_labels = semIns_labels[:, 0]
+		print('get mean insSize')
+		files = glob.glob(os.path.join(train_dataset_path, "*.csv"))
 
-				ins_idx = np.unique(ins_labels)
-				for ins_id in ins_idx:
-					tmp = (ins_labels == ins_id)
-					sem = scipy.stats.mode(sem_labels[tmp])[0][0]
-					mean_insSize_by_sem[sem].append(np.sum(np.asarray(tmp, dtype=np.float32)))
+		for file_path in files:
+			npPoints, sem_labels, ins_labels = load_ascii_cloud_prepared(file_path)
+
+			ins_idx = np.unique(ins_labels)
+			for ins_id in ins_idx:
+				tmp = (ins_labels == ins_id)
+				sem = scipy.stats.mode(sem_labels[tmp])[0][0]
+				mean_insSize_by_sem[sem].append(np.sum(np.asarray(tmp, dtype=np.float32)))
 
 		for sem in mean_insSize_by_sem: mean_insSize_by_sem[sem] = np.mean(mean_insSize_by_sem[sem])
 
+		print(mean_insSize_by_sem.shape)
+		print(mean_insSize_by_sem)
 		return mean_insSize_by_sem
 
 class Evaluation:
@@ -167,13 +168,13 @@ class Evaluation:
 		if not os.path.exists(result_path + 'res_by_file/'): os.makedirs(result_path + 'res_by_file/')
 		scipy.io.savemat(result_path + 'res_by_file/allFiles.mat', scene_result, do_compression=True)
 
-		
-
 	@staticmethod
-	def evaluation(dataset_path, train_areas, result_path):
+	def evaluation(train_dataset_path, result_path):
 		from helper_data_s3dis_LK import Data_Configs as Data_Configs
 		configs = Data_Configs()
-		mean_insSize_by_sem = Eval_Tools.get_mean_insSize_by_sem(dataset_path, train_areas)
+
+
+		mean_insSize_by_sem = Eval_Tools.get_mean_insSize_by_sem(train_dataset_path)
 
 		TP_FP_Total = {}
 		for sem_id in configs.sem_ids:
