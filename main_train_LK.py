@@ -72,9 +72,9 @@ def train(net, data):
 				print('Testing')
 				from main_eval_LK import Evaluation
 				result_path = './log/test_res/test_LK/'
-				Evaluation.ttest(net, data, result_path, test_batch_size=1)
+				#Evaluation.ttest(net, data, result_path, test_batch_size=1)
 
-				#Evaluation.evaluation(train_dataset_path, result_path)
+				Evaluation.evaluation(train_dataset_path, result_path)
 				print('full eval finished!')
 
 		logging.warning('End epoch %d' % ep)

@@ -136,7 +136,7 @@ class Evaluation:
 			file_list.append(file)
 
 			file_name = file.split('/')[-1].split('.')[0]
-			print(file_name)
+			#print(file_name)
 
 			bat_pc, bat_sem_gt, bat_ins_gt, bat_psem_onehot, bat_bbvert, bat_pmask, bat_files = data.load_test_next_batch_sq(bat_files=file_list)
 
@@ -165,7 +165,7 @@ class Evaluation:
 			block_name = file
 			scene_result['file_'+file_name]={'pc':pc, 'sem_gt':sem_gt, 'ins_gt':ins_gt, 'sem_pred_raw':sem_pred_raw,'bbvert_pred_raw':bbvert_pred_raw, 'bbscore_pred_raw':bbscore_pred_raw,'pmask_pred_raw':pmask_pred_raw}
 
-			print("key count: ", len(scene_result))
+			#print("key count: ", len(scene_result))
 
 			if not os.path.exists(result_path + 'res_by_file/'): os.makedirs(result_path + 'res_by_file/')	
 			scipy.io.savemat(result_path + 'res_by_file/' + file_name + '.mat', scene_result, do_compression=True)
