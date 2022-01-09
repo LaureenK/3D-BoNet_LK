@@ -234,6 +234,7 @@ class Evaluation:
 
 			#pc_xyz_int = (pc_all[:, 6:9] / gap).astype(np.int32)
 			#ins_pred_all = volume[tuple(pc_xyz_int.T)]
+			#gt -> ground truth -> original Ergebnisse
 
 			print('pc_all')
 			print(type(pc_all))
@@ -244,16 +245,19 @@ class Evaluation:
 			print(type(ins_gt_all))
 			print(ins_gt_all.shape)
 			print(ins_gt_all)
+			print(np.unique(ins_gt_all))
 
 			print('sem_pred_all')
 			print(type(sem_pred_all))
 			print(sem_pred_all.shape)
 			print(sem_pred_all)
+			print(np.unique(sem_pred_all))
 
 			print('sem_gt_all')
 			print(type(sem_gt_all))
 			print(sem_gt_all.shape)
 			print(sem_gt_all)
+			print(np.unique(sem_gt_all))
 
 			# print('pc_xyz_int')
 			# print(type(pc_xyz_int))

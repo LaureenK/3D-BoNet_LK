@@ -241,32 +241,36 @@ class Evaluation:
 			print('pc_all')
 			print(type(pc_all))
 			print(pc_all.shape)
-			print(pc_all)
+			#print(pc_all)
 
 			print('ins_gt_all')
 			print(type(ins_gt_all))
 			print(ins_gt_all.shape)
 			print(ins_gt_all)
+			print(np.unique(ins_gt_all))
 
 			print('sem_pred_all')
 			print(type(sem_pred_all))
 			print(sem_pred_all.shape)
 			print(sem_pred_all)
+			print(np.unique(sem_pred_all))
 
 			print('sem_gt_all')
 			print(type(sem_gt_all))
 			print(sem_gt_all.shape)
 			print(sem_gt_all)
+			print(np.unique(sem_gt_all))
 
 			print('pc_xyz_int')
 			print(type(pc_xyz_int))
 			print(pc_xyz_int.shape)
-			print(pc_xyz_int)
+			#print(pc_xyz_int)
 
 			print('ins_pred_all')
 			print(type(ins_pred_all))
 			print(ins_pred_all.shape)
 			print(ins_pred_all)
+			print(np.unique(ins_pred_all))
 
 			#### if you need to visulize, please uncomment the follow lines
 			#from helper_data_plot import Plot as Plot
