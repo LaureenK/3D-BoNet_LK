@@ -67,8 +67,9 @@ def train(net, data):
 
 			##### full eval, if needed
 			#if ep%5==0 and i==total_train_batch_num-1:
-			print('Testing')
+			
 			if i==total_train_batch_num-1:
+				print('Testing')
 				from main_eval_LK import Evaluation
 				result_path = './log/test_res/test_LK/'
 				Evaluation.ttest(net, data, result_path, test_batch_size=1)
