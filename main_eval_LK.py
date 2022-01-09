@@ -129,8 +129,9 @@ class Evaluation:
 		test_files = data.test_files
 		print('total_test_batch_num_sq', len(test_files))
 		
-		scene_result = {}
+		
 		for file in test_files:
+			scene_result = {}
 			file_list = []
 			file_list.append(file)
 
@@ -163,6 +164,8 @@ class Evaluation:
 
 			block_name = file
 			scene_result['file_'+file_name]={'pc':pc, 'sem_gt':sem_gt, 'ins_gt':ins_gt, 'sem_pred_raw':sem_pred_raw,'bbvert_pred_raw':bbvert_pred_raw, 'bbscore_pred_raw':bbscore_pred_raw,'pmask_pred_raw':pmask_pred_raw}
+
+			print("key count: ", len(scene_result))
 
 			if not os.path.exists(result_path + 'res_by_file/'): os.makedirs(result_path + 'res_by_file/')	
 			scipy.io.savemat(result_path + 'res_by_file/' + file_name + '.mat', scene_result, do_compression=True)
