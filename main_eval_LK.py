@@ -135,27 +135,27 @@ class Evaluation:
 			file_list.append(file)
 			bat_pc, bat_sem_gt, bat_ins_gt, bat_psem_onehot, bat_bbvert, bat_pmask, bat_files = data.load_test_next_batch_sq(bat_files=file_list)
 
-			print("Run session")
+			#print("Run session")
 			[y_psem_pred_sq_raw, y_bbvert_pred_sq_raw, y_bbscore_pred_sq_raw, y_pmask_pred_sq_raw] = \
 			net.sess.run([net.y_psem_pred, net.y_bbvert_pred_raw, net.y_bbscore_pred_raw, net.y_pmask_pred_raw],feed_dict={net.X_pc: bat_pc[:, :, 0:3], net.is_train: False})
-			print("run done")
+			#print("run done")
 			pc = np.asarray(bat_pc[0], dtype=np.float16)
 			sem_gt = np.asarray(bat_sem_gt[0], dtype=np.int16)
 			ins_gt = np.asarray(bat_ins_gt[0], dtype=np.int32)
 
-			print('pc: ', pc.shape)
-			print('sem_gt: ', sem_gt.shape)
-			print('ins_gt: ', ins_gt.shape)
+			# print('pc: ', pc.shape)
+			# print('sem_gt: ', sem_gt.shape)
+			# print('ins_gt: ', ins_gt.shape)
 
 			sem_pred_raw = np.asarray(y_psem_pred_sq_raw[0], dtype=np.float16)
 			bbvert_pred_raw = np.asarray(y_bbvert_pred_sq_raw[0], dtype=np.float16)
 			bbscore_pred_raw = np.asarray(y_bbscore_pred_sq_raw[0], dtype=np.float16)
 			pmask_pred_raw = np.asarray(y_pmask_pred_sq_raw[0], dtype=np.float16)
 
-			print('sem_pred_raw: ', sem_pred_raw.shape)
-			print('bbvert_pred_raw: ', bbvert_pred_raw.shape)
-			print('bbscore_pred_raw: ', bbscore_pred_raw.shape)
-			print('pmask_pred_raw: ', pmask_pred_raw.shape)
+			# print('sem_pred_raw: ', sem_pred_raw.shape)
+			# print('bbvert_pred_raw: ', bbvert_pred_raw.shape)
+			# print('bbscore_pred_raw: ', bbscore_pred_raw.shape)
+			# print('pmask_pred_raw: ', pmask_pred_raw.shape)
 
 			block_name = file
 			scene_result['file_'+block_name]={'pc':pc, 'sem_gt':sem_gt, 'ins_gt':ins_gt, 'sem_pred_raw':sem_pred_raw,'bbvert_pred_raw':bbvert_pred_raw, 'bbscore_pred_raw':bbscore_pred_raw,'pmask_pred_raw':pmask_pred_raw}
