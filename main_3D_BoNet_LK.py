@@ -65,7 +65,7 @@ class BoNet:
 		points_num = tf.shape(X_pc)[1]
 		#points_num = X_pc.get_shape()[1].value
 
-		print("1:points_num: ", points_num)
+		#print("1:points_num: ", points_num)
 		#print(X_pc.shape[1])
 		#print(X_pc.get_shape()[1].value)
 		
