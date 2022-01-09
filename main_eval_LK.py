@@ -201,6 +201,7 @@ class Evaluation:
 			#volume = -1 * np.ones([volume_num, volume_num, volume_num]).astype(np.int32)
 			#volume_sem = -1 * np.ones([volume_num, volume_num, volume_num]).astype(np.int32)
 
+			print("key count: ", len(scene_result))
 			for i in range(len(scene_result)):
 				block = 'file_'+ file_name
 				if block not in scene_result: continue
@@ -213,11 +214,15 @@ class Evaluation:
 				pmask_pred_raw = scene_result[block][0]['pmask_pred_raw'][0]
 				sem_pred_raw = scene_result[block][0]['sem_pred_raw'][0]
 
+				print("pc shape: ", pc.shape)
+				print("ins_gt shape: ", ins_gt.shape)
+				print("sem_gt: ", sem_gt.shape)
+
 				sem_pred = np.argmax(sem_pred_raw, axis=-1)
 				pmask_pred = pmask_pred_raw * np.tile(bbscore_pred_raw[:, None], [1, pmask_pred_raw.shape[-1]])
 				ins_pred = np.argmax(pmask_pred, axis=-2)
 
-				ins_sem_dic = Eval_Tools.get_sem_for_ins(ins_by_pts=ins_pred, sem_by_pts=sem_pred)
+				#ins_sem_dic = Eval_Tools.get_sem_for_ins(ins_by_pts=ins_pred, sem_by_pts=sem_pred)
 				
 				## Block Merging
 				#Eval_Tools.BlockMerging(volume, volume_sem, pc[:, 6:9], ins_pred, ins_sem_dic, gap)
