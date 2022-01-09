@@ -222,6 +222,10 @@ class Evaluation:
 				pmask_pred = pmask_pred_raw * np.tile(bbscore_pred_raw[:, None], [1, pmask_pred_raw.shape[-1]])
 				ins_pred = np.argmax(pmask_pred, axis=-2)
 
+				print("sem_pred shape: ", sem_pred.shape)
+				print("pmask_pred shape: ", pmask_pred.shape)
+				print("ins_pred: ", ins_pred.shape)
+
 				#ins_sem_dic = Eval_Tools.get_sem_for_ins(ins_by_pts=ins_pred, sem_by_pts=sem_pred)
 				
 				## Block Merging
@@ -231,6 +235,7 @@ class Evaluation:
 				ins_gt_all.append(ins_gt)
 				sem_pred_all.append(sem_pred)
 				sem_gt_all.append(sem_gt)
+				print('pc_all: ',len(pc_all))
 			##
 			pc_all = np.concatenate(pc_all, axis=0)
 			ins_gt_all = np.concatenate(ins_gt_all, axis=0)
