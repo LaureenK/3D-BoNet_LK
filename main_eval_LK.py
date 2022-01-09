@@ -65,7 +65,7 @@ class Eval_Tools:
 	@staticmethod
 	def get_mean_insSize_by_sem(train_dataset_path):
 		from helper_data_s3dis_LK import Data_Configs as Data_Configs
-		from helper_data_s3dis_LK import load_ascii_cloud_prepared
+		from helper_data_s3dis_LK import Data_S3DIS as data
 		configs = Data_Configs()
 
 		mean_insSize_by_sem = {}
@@ -75,7 +75,7 @@ class Eval_Tools:
 		files = glob.glob(os.path.join(train_dataset_path, "*.csv"))
 
 		for file_path in files:
-			npPoints, sem_labels, ins_labels = load_ascii_cloud_prepared(file_path)
+			npPoints, sem_labels, ins_labels = data.load_ascii_cloud_prepared(file_path)
 
 			ins_idx = np.unique(ins_labels)
 			for ins_id in ins_idx:
