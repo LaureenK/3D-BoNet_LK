@@ -238,6 +238,36 @@ class Evaluation:
 			pc_xyz_int = (pc_all[:, 6:9] / gap).astype(np.int32)
 			ins_pred_all = volume[tuple(pc_xyz_int.T)]
 
+			print('pc_all')
+			print(type(pc_all))
+			print(pc_all.shape)
+			print(pc_all)
+
+			print('ins_gt_all')
+			print(type(ins_gt_all))
+			print(ins_gt_all.shape)
+			print(ins_gt_all)
+
+			print('sem_pred_all')
+			print(type(sem_pred_all))
+			print(sem_pred_all.shape)
+			print(sem_pred_all)
+
+			print('sem_gt_all')
+			print(type(sem_gt_all))
+			print(sem_gt_all.shape)
+			print(sem_gt_all)
+
+			print('pc_xyz_int')
+			print(type(pc_xyz_int))
+			print(pc_xyz_int.shape)
+			print(pc_xyz_int)
+
+			print('ins_pred_all')
+			print(type(ins_pred_all))
+			print(ins_pred_all.shape)
+			print(ins_pred_all)
+
 			#### if you need to visulize, please uncomment the follow lines
 			#from helper_data_plot import Plot as Plot
 			#Plot.draw_pc(np.concatenate([pc_all[:,9:12], pc_all[:,3:6]], axis=1))
@@ -248,65 +278,65 @@ class Evaluation:
 			####
 
 			###################
-			# pred ins
-			ins_pred_by_sem = {}
-			for sem in configs.sem_ids: ins_pred_by_sem[sem] = []
-			ins_idx, cnts = np.unique(ins_pred_all, return_counts=True)
-			for ins_id, cn in zip(ins_idx, cnts):
-				if ins_id <= -1: continue
-				tmp = (ins_pred_all == ins_id)
-				sem = scipy.stats.mode(sem_pred_all[tmp])[0][0]
-				if cn <= 0.3*mean_insSize_by_sem[sem]: continue  # remove small instances
-				ins_pred_by_sem[sem].append(tmp)
-			# gt ins
-			ins_gt_by_sem = {}
-			for sem in configs.sem_ids: ins_gt_by_sem[sem] = []
-			ins_idx = np.unique(ins_gt_all)
-			for ins_id in ins_idx:
-				if ins_id <= -1: continue
-				tmp = (ins_gt_all == ins_id)
-				sem = scipy.stats.mode(sem_gt_all[tmp])[0][0]
-				if len(np.unique(sem_gt_all[ins_gt_all == ins_id])) != 1: print('sem ins label error'); exit()
-				ins_gt_by_sem[sem].append(tmp)
-			# to associate
-			for sem_id, sem_name in zip(configs.sem_ids, configs.sem_names):
-				ins_pred_tp = ins_pred_by_sem[sem_id]
-				ins_gt_tp = ins_gt_by_sem[sem_id]
+		# 	# pred ins
+		# 	ins_pred_by_sem = {}
+		# 	for sem in configs.sem_ids: ins_pred_by_sem[sem] = []
+		# 	ins_idx, cnts = np.unique(ins_pred_all, return_counts=True)
+		# 	for ins_id, cn in zip(ins_idx, cnts):
+		# 		if ins_id <= -1: continue
+		# 		tmp = (ins_pred_all == ins_id)
+		# 		sem = scipy.stats.mode(sem_pred_all[tmp])[0][0]
+		# 		if cn <= 0.3*mean_insSize_by_sem[sem]: continue  # remove small instances
+		# 		ins_pred_by_sem[sem].append(tmp)
+		# 	# gt ins
+		# 	ins_gt_by_sem = {}
+		# 	for sem in configs.sem_ids: ins_gt_by_sem[sem] = []
+		# 	ins_idx = np.unique(ins_gt_all)
+		# 	for ins_id in ins_idx:
+		# 		if ins_id <= -1: continue
+		# 		tmp = (ins_gt_all == ins_id)
+		# 		sem = scipy.stats.mode(sem_gt_all[tmp])[0][0]
+		# 		if len(np.unique(sem_gt_all[ins_gt_all == ins_id])) != 1: print('sem ins label error'); exit()
+		# 		ins_gt_by_sem[sem].append(tmp)
+		# 	# to associate
+		# 	for sem_id, sem_name in zip(configs.sem_ids, configs.sem_names):
+		# 		ins_pred_tp = ins_pred_by_sem[sem_id]
+		# 		ins_gt_tp = ins_gt_by_sem[sem_id]
 
-				flag_pred = np.zeros(len(ins_pred_tp), dtype=np.int8)
-				for i_p, ins_p in enumerate(ins_pred_tp):
-					iou_max = -1
-					for i_g, ins_g in enumerate(ins_gt_tp):
-						u = ins_g | ins_p
-						i = ins_g & ins_p
-						iou_tp = float(np.sum(i)) / (np.sum(u) + 1e-8)
-						if iou_tp > iou_max:
-							iou_max = iou_tp
-					if iou_max >= 0.5:
-						flag_pred[i_p] = 1
-				###
-				TP_FP_Total[sem_id]['TP'] += np.sum(flag_pred)
-				TP_FP_Total[sem_id]['FP'] += len(flag_pred) - np.sum(flag_pred)
-				TP_FP_Total[sem_id]['Total'] += len(ins_gt_tp)
+		# 		flag_pred = np.zeros(len(ins_pred_tp), dtype=np.int8)
+		# 		for i_p, ins_p in enumerate(ins_pred_tp):
+		# 			iou_max = -1
+		# 			for i_g, ins_g in enumerate(ins_gt_tp):
+		# 				u = ins_g | ins_p
+		# 				i = ins_g & ins_p
+		# 				iou_tp = float(np.sum(i)) / (np.sum(u) + 1e-8)
+		# 				if iou_tp > iou_max:
+		# 					iou_max = iou_tp
+		# 			if iou_max >= 0.5:
+		# 				flag_pred[i_p] = 1
+		# 		###
+		# 		TP_FP_Total[sem_id]['TP'] += np.sum(flag_pred)
+		# 		TP_FP_Total[sem_id]['FP'] += len(flag_pred) - np.sum(flag_pred)
+		# 		TP_FP_Total[sem_id]['Total'] += len(ins_gt_tp)
 
-		###############
-		pre_all = []
-		rec_all = []
-		for sem_id, sem_name in zip(configs.sem_ids, configs.sem_names):
-			TP = TP_FP_Total[sem_id]['TP']
-			FP = TP_FP_Total[sem_id]['FP']
-			Total = TP_FP_Total[sem_id]['Total']
-			pre = float(TP) / (TP + FP + 1e-8)
-			rec = float(TP) / (Total + 1e-8)
-			if Total > 0:
-				pre_all.append(pre)
-				rec_all.append(rec)
-			out_file = result_path +'PreRec_' + str(sem_id).zfill(2)+'_'+sem_name+ '_' + str(round(pre, 4)) + '_' + str(round(rec, 4))
-			np.savez_compressed(out_file + '.npz', tp={0, 0})
-		out_file = result_path +'PreRec_mean_'+ str(round(np.mean(pre_all), 4)) + '_' + str(round(np.mean(rec_all), 4))
-		np.savez_compressed(out_file + '.npz', tp={0, 0})
+		# ###############
+		# pre_all = []
+		# rec_all = []
+		# for sem_id, sem_name in zip(configs.sem_ids, configs.sem_names):
+		# 	TP = TP_FP_Total[sem_id]['TP']
+		# 	FP = TP_FP_Total[sem_id]['FP']
+		# 	Total = TP_FP_Total[sem_id]['Total']
+		# 	pre = float(TP) / (TP + FP + 1e-8)
+		# 	rec = float(TP) / (Total + 1e-8)
+		# 	if Total > 0:
+		# 		pre_all.append(pre)
+		# 		rec_all.append(rec)
+		# 	out_file = result_path +'PreRec_' + str(sem_id).zfill(2)+'_'+sem_name+ '_' + str(round(pre, 4)) + '_' + str(round(rec, 4))
+		# 	np.savez_compressed(out_file + '.npz', tp={0, 0})
+		# out_file = result_path +'PreRec_mean_'+ str(round(np.mean(pre_all), 4)) + '_' + str(round(np.mean(rec_all), 4))
+		# np.savez_compressed(out_file + '.npz', tp={0, 0})
 
-		return 0
+		# return 0
 
 
 #######################

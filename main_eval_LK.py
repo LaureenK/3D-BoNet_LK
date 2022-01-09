@@ -131,9 +131,12 @@ class Evaluation:
 		
 		scene_result = {}
 		for file in test_files:
-			#vielleicht liste
 			file_list = []
 			file_list.append(file)
+
+			file_name = file.split('/')[-1].split('.')[0]
+			print(file_name)
+
 			bat_pc, bat_sem_gt, bat_ins_gt, bat_psem_onehot, bat_bbvert, bat_pmask, bat_files = data.load_test_next_batch_sq(bat_files=file_list)
 
 			#print("Run session")
@@ -159,20 +162,20 @@ class Evaluation:
 			# print('pmask_pred_raw: ', pmask_pred_raw.shape)
 
 			block_name = file
-			scene_result['file_'+block_name]={'pc':pc, 'sem_gt':sem_gt, 'ins_gt':ins_gt, 'sem_pred_raw':sem_pred_raw,'bbvert_pred_raw':bbvert_pred_raw, 'bbscore_pred_raw':bbscore_pred_raw,'pmask_pred_raw':pmask_pred_raw}
-		
+			scene_result['file_'+file_name]={'pc':pc, 'sem_gt':sem_gt, 'ins_gt':ins_gt, 'sem_pred_raw':sem_pred_raw,'bbvert_pred_raw':bbvert_pred_raw, 'bbscore_pred_raw':bbscore_pred_raw,'pmask_pred_raw':pmask_pred_raw}
+
+			if not os.path.exists(result_path + 'res_by_file/'): os.makedirs(result_path + 'res_by_file/')	
+			scipy.io.savemat(result_path + 'res_by_file/' + file_name + '.mat', scene_result, do_compression=True)
 		
 		###
-		if len(scene_result)!=len(test_files): print('file testing error'); exit()
-
-		if not os.path.exists(result_path + 'res_by_file/'): os.makedirs(result_path + 'res_by_file/')
-		scipy.io.savemat(result_path + 'res_by_file/allFiles.mat', scene_result, do_compression=True)
+		# if len(scene_result)!=len(test_files): print('file testing error'); exit()
+		# if not os.path.exists(result_path + 'res_by_file/'): os.makedirs(result_path + 'res_by_file/')
+		# scipy.io.savemat(result_path + 'res_by_file/allFiles.mat', scene_result, do_compression=True)
 
 	@staticmethod
 	def evaluation(train_dataset_path, result_path):
 		from helper_data_s3dis_LK import Data_Configs as Data_Configs
 		configs = Data_Configs()
-
 
 		mean_insSize_by_sem = Eval_Tools.get_mean_insSize_by_sem(train_dataset_path)
 
@@ -183,21 +186,26 @@ class Evaluation:
 			TP_FP_Total[sem_id]['FP'] = 0
 			TP_FP_Total[sem_id]['Total'] = 0
 
-		res_scenes = sorted(os.listdir(result_path+'res_by_scene/'))
-		for scene_name in res_scenes:
-			print('eval scene', scene_name)
-			scene_result = scipy.io.loadmat(result_path+'res_by_scene/'+scene_name, verify_compressed_data_integrity=False)
+		res_files = sorted(os.listdir(result_path+'res_by_file/'))      #### 0.mat 1.mat 5.mat
+		for file in res_files:
+			file_name = file.split('/')[-1].split('.')[0]
+
+			print('eval scene', file_name)
+			scene_result = scipy.io.loadmat(result_path+'res_by_file/'+file, verify_compressed_data_integrity=False)
 
 			pc_all = []; ins_gt_all = []; sem_pred_all = []; sem_gt_all = []
+			
 			## block merging?
-			gap = 5e-3
-			volume_num = int(1. / gap) + 2
-			volume = -1 * np.ones([volume_num, volume_num, volume_num]).astype(np.int32)
-			volume_sem = -1 * np.ones([volume_num, volume_num, volume_num]).astype(np.int32)
+			#gap = 5e-3
+			#volume_num = int(1. / gap) + 2
+			#volume = -1 * np.ones([volume_num, volume_num, volume_num]).astype(np.int32)
+			#volume_sem = -1 * np.ones([volume_num, volume_num, volume_num]).astype(np.int32)
 
 			for i in range(len(scene_result)):
-				block = 'block_'+str(i).zfill(4)
+				block = 'file_'+ file_name
 				if block not in scene_result: continue
+
+				#hole ergebnisse aus mat
 				pc = scene_result[block][0]['pc'][0]
 				ins_gt = scene_result[block][0]['ins_gt'][0][0]
 				sem_gt = scene_result[block][0]['sem_gt'][0][0]
@@ -208,9 +216,11 @@ class Evaluation:
 				sem_pred = np.argmax(sem_pred_raw, axis=-1)
 				pmask_pred = pmask_pred_raw * np.tile(bbscore_pred_raw[:, None], [1, pmask_pred_raw.shape[-1]])
 				ins_pred = np.argmax(pmask_pred, axis=-2)
+
 				ins_sem_dic = Eval_Tools.get_sem_for_ins(ins_by_pts=ins_pred, sem_by_pts=sem_pred)
+				
 				## Block Merging
-				Eval_Tools.BlockMerging(volume, volume_sem, pc[:, 6:9], ins_pred, ins_sem_dic, gap)
+				#Eval_Tools.BlockMerging(volume, volume_sem, pc[:, 6:9], ins_pred, ins_sem_dic, gap)
 
 				pc_all.append(pc)
 				ins_gt_all.append(ins_gt)
@@ -222,8 +232,38 @@ class Evaluation:
 			sem_pred_all = np.concatenate(sem_pred_all, axis=0)
 			sem_gt_all = np.concatenate(sem_gt_all, axis=0)
 
-			pc_xyz_int = (pc_all[:, 6:9] / gap).astype(np.int32)
-			ins_pred_all = volume[tuple(pc_xyz_int.T)]
+			#pc_xyz_int = (pc_all[:, 6:9] / gap).astype(np.int32)
+			#ins_pred_all = volume[tuple(pc_xyz_int.T)]
+
+			print('pc_all')
+			print(type(pc_all))
+			print(pc_all.shape)
+			print(pc_all)
+
+			print('ins_gt_all')
+			print(type(ins_gt_all))
+			print(ins_gt_all.shape)
+			print(ins_gt_all)
+
+			print('sem_pred_all')
+			print(type(sem_pred_all))
+			print(sem_pred_all.shape)
+			print(sem_pred_all)
+
+			print('sem_gt_all')
+			print(type(sem_gt_all))
+			print(sem_gt_all.shape)
+			print(sem_gt_all)
+
+			# print('pc_xyz_int')
+			# print(type(pc_xyz_int))
+			# print(pc_xyz_int.shape)
+			# print(pc_xyz_int)
+
+			# print('ins_pred_all')
+			# print(type(ins_pred_all))
+			# print(ins_pred_all.shape)
+			# print(ins_pred_all)
 
 			#### if you need to visulize, please uncomment the follow lines
 			#from helper_data_plot import Plot as Plot
@@ -234,66 +274,66 @@ class Evaluation:
 			#Plot.draw_pc_semins(pc_xyz=pc_all[:, 9:12], pc_semins=sem_pred_all)
 			####
 
-			###################
-			# pred ins
-			ins_pred_by_sem = {}
-			for sem in configs.sem_ids: ins_pred_by_sem[sem] = []
-			ins_idx, cnts = np.unique(ins_pred_all, return_counts=True)
-			for ins_id, cn in zip(ins_idx, cnts):
-				if ins_id <= -1: continue
-				tmp = (ins_pred_all == ins_id)
-				sem = scipy.stats.mode(sem_pred_all[tmp])[0][0]
-				if cn <= 0.3*mean_insSize_by_sem[sem]: continue  # remove small instances
-				ins_pred_by_sem[sem].append(tmp)
-			# gt ins
-			ins_gt_by_sem = {}
-			for sem in configs.sem_ids: ins_gt_by_sem[sem] = []
-			ins_idx = np.unique(ins_gt_all)
-			for ins_id in ins_idx:
-				if ins_id <= -1: continue
-				tmp = (ins_gt_all == ins_id)
-				sem = scipy.stats.mode(sem_gt_all[tmp])[0][0]
-				if len(np.unique(sem_gt_all[ins_gt_all == ins_id])) != 1: print('sem ins label error'); exit()
-				ins_gt_by_sem[sem].append(tmp)
-			# to associate
-			for sem_id, sem_name in zip(configs.sem_ids, configs.sem_names):
-				ins_pred_tp = ins_pred_by_sem[sem_id]
-				ins_gt_tp = ins_gt_by_sem[sem_id]
+		# 	###################
+		# 	# pred ins
+		# 	ins_pred_by_sem = {}
+		# 	for sem in configs.sem_ids: ins_pred_by_sem[sem] = []
+		# 	ins_idx, cnts = np.unique(ins_pred_all, return_counts=True)
+		# 	for ins_id, cn in zip(ins_idx, cnts):
+		# 		if ins_id <= -1: continue
+		# 		tmp = (ins_pred_all == ins_id)
+		# 		sem = scipy.stats.mode(sem_pred_all[tmp])[0][0]
+		# 		if cn <= 0.3*mean_insSize_by_sem[sem]: continue  # remove small instances
+		# 		ins_pred_by_sem[sem].append(tmp)
+		# 	# gt ins
+		# 	ins_gt_by_sem = {}
+		# 	for sem in configs.sem_ids: ins_gt_by_sem[sem] = []
+		# 	ins_idx = np.unique(ins_gt_all)
+		# 	for ins_id in ins_idx:
+		# 		if ins_id <= -1: continue
+		# 		tmp = (ins_gt_all == ins_id)
+		# 		sem = scipy.stats.mode(sem_gt_all[tmp])[0][0]
+		# 		if len(np.unique(sem_gt_all[ins_gt_all == ins_id])) != 1: print('sem ins label error'); exit()
+		# 		ins_gt_by_sem[sem].append(tmp)
+		# 	# to associate
+		# 	for sem_id, sem_name in zip(configs.sem_ids, configs.sem_names):
+		# 		ins_pred_tp = ins_pred_by_sem[sem_id]
+		# 		ins_gt_tp = ins_gt_by_sem[sem_id]
 
-				flag_pred = np.zeros(len(ins_pred_tp), dtype=np.int8)
-				for i_p, ins_p in enumerate(ins_pred_tp):
-					iou_max = -1
-					for i_g, ins_g in enumerate(ins_gt_tp):
-						u = ins_g | ins_p
-						i = ins_g & ins_p
-						iou_tp = float(np.sum(i)) / (np.sum(u) + 1e-8)
-						if iou_tp > iou_max:
-							iou_max = iou_tp
-					if iou_max >= 0.5:
-						flag_pred[i_p] = 1
-				###
-				TP_FP_Total[sem_id]['TP'] += np.sum(flag_pred)
-				TP_FP_Total[sem_id]['FP'] += len(flag_pred) - np.sum(flag_pred)
-				TP_FP_Total[sem_id]['Total'] += len(ins_gt_tp)
+		# 		flag_pred = np.zeros(len(ins_pred_tp), dtype=np.int8)
+		# 		for i_p, ins_p in enumerate(ins_pred_tp):
+		# 			iou_max = -1
+		# 			for i_g, ins_g in enumerate(ins_gt_tp):
+		# 				u = ins_g | ins_p
+		# 				i = ins_g & ins_p
+		# 				iou_tp = float(np.sum(i)) / (np.sum(u) + 1e-8)
+		# 				if iou_tp > iou_max:
+		# 					iou_max = iou_tp
+		# 			if iou_max >= 0.5:
+		# 				flag_pred[i_p] = 1
+		# 		###
+		# 		TP_FP_Total[sem_id]['TP'] += np.sum(flag_pred)
+		# 		TP_FP_Total[sem_id]['FP'] += len(flag_pred) - np.sum(flag_pred)
+		# 		TP_FP_Total[sem_id]['Total'] += len(ins_gt_tp)
 
-		###############
-		pre_all = []
-		rec_all = []
-		for sem_id, sem_name in zip(configs.sem_ids, configs.sem_names):
-			TP = TP_FP_Total[sem_id]['TP']
-			FP = TP_FP_Total[sem_id]['FP']
-			Total = TP_FP_Total[sem_id]['Total']
-			pre = float(TP) / (TP + FP + 1e-8)
-			rec = float(TP) / (Total + 1e-8)
-			if Total > 0:
-				pre_all.append(pre)
-				rec_all.append(rec)
-			out_file = result_path +'PreRec_' + str(sem_id).zfill(2)+'_'+sem_name+ '_' + str(round(pre, 4)) + '_' + str(round(rec, 4))
-			np.savez_compressed(out_file + '.npz', tp={0, 0})
-		out_file = result_path +'PreRec_mean_'+ str(round(np.mean(pre_all), 4)) + '_' + str(round(np.mean(rec_all), 4))
-		np.savez_compressed(out_file + '.npz', tp={0, 0})
+		# ###############
+		# pre_all = []
+		# rec_all = []
+		# for sem_id, sem_name in zip(configs.sem_ids, configs.sem_names):
+		# 	TP = TP_FP_Total[sem_id]['TP']
+		# 	FP = TP_FP_Total[sem_id]['FP']
+		# 	Total = TP_FP_Total[sem_id]['Total']
+		# 	pre = float(TP) / (TP + FP + 1e-8)
+		# 	rec = float(TP) / (Total + 1e-8)
+		# 	if Total > 0:
+		# 		pre_all.append(pre)
+		# 		rec_all.append(rec)
+		# 	out_file = result_path +'PreRec_' + str(sem_id).zfill(2)+'_'+sem_name+ '_' + str(round(pre, 4)) + '_' + str(round(rec, 4))
+		# 	np.savez_compressed(out_file + '.npz', tp={0, 0})
+		# out_file = result_path +'PreRec_mean_'+ str(round(np.mean(pre_all), 4)) + '_' + str(round(np.mean(rec_all), 4))
+		# np.savez_compressed(out_file + '.npz', tp={0, 0})
 
-		return 0
+		# return 0
 
 
 #######################
