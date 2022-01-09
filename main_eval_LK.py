@@ -196,7 +196,7 @@ class Evaluation:
 			print('eval scene', file_name)
 			scene_result = scipy.io.loadmat(result_path+'res_by_file/'+file, verify_compressed_data_integrity=False)
 
-			pc_all = []; ins_gt_all = []; sem_pred_all = []; sem_gt_all = []
+			pc_all = []; ins_gt_all = []; sem_pred_all = []; sem_gt_all = []; ins_pred_all= []
 			
 			## block merging?
 			#gap = 5e-3
@@ -236,6 +236,7 @@ class Evaluation:
 			ins_gt_all.append(ins_gt)
 			sem_pred_all.append(sem_pred)
 			sem_gt_all.append(sem_gt)
+			ins_pred_all.append(ins_pred)
 			#print('pc_all: ',len(pc_all))
 
 			#for end
@@ -244,6 +245,7 @@ class Evaluation:
 			ins_gt_all = np.concatenate(ins_gt_all, axis=0)
 			sem_pred_all = np.concatenate(sem_pred_all, axis=0)
 			sem_gt_all = np.concatenate(sem_gt_all, axis=0)
+			ins_pred_all = np.concatenate(ins_pred_all, axis=0)
 
 			#pc_xyz_int = (pc_all[:, 6:9] / gap).astype(np.int32)
 			#ins_pred_all = volume[tuple(pc_xyz_int.T)]
@@ -277,10 +279,10 @@ class Evaluation:
 			# print(pc_xyz_int.shape)
 			# print(pc_xyz_int)
 
-			# print('ins_pred_all')
-			# print(type(ins_pred_all))
-			# print(ins_pred_all.shape)
-			# print(ins_pred_all)
+			print('ins_pred_all')
+			print(type(ins_pred_all))
+			print(ins_pred_all.shape)
+			print(ins_pred_all)
 
 			#### if you need to visulize, please uncomment the follow lines
 			#from helper_data_plot import Plot as Plot
