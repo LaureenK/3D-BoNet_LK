@@ -205,6 +205,7 @@ class Evaluation:
 			#volume_sem = -1 * np.ones([volume_num, volume_num, volume_num]).astype(np.int32)
 
 			print("key count: ", len(scene_result))
+			print(scene_result)
 			for i in range(len(scene_result)):
 				block = 'file_'+ file_name
 				if block not in scene_result: continue
@@ -249,28 +250,28 @@ class Evaluation:
 			#ins_pred_all = volume[tuple(pc_xyz_int.T)]
 			#gt -> ground truth -> original Ergebnisse
 
-			print('pc_all')
-			print(type(pc_all))
-			print(pc_all.shape)
-			print(pc_all)
+			# print('pc_all')
+			# print(type(pc_all))
+			# print(pc_all.shape)
+			# print(pc_all)
 
-			print('ins_gt_all')
-			print(type(ins_gt_all))
-			print(ins_gt_all.shape)
-			print(ins_gt_all)
-			print(np.unique(ins_gt_all))
+			# print('ins_gt_all')
+			# print(type(ins_gt_all))
+			# print(ins_gt_all.shape)
+			# print(ins_gt_all)
+			# print(np.unique(ins_gt_all))
 
-			print('sem_pred_all')
-			print(type(sem_pred_all))
-			print(sem_pred_all.shape)
-			print(sem_pred_all)
-			print(np.unique(sem_pred_all))
+			# print('sem_pred_all')
+			# print(type(sem_pred_all))
+			# print(sem_pred_all.shape)
+			# print(sem_pred_all)
+			# print(np.unique(sem_pred_all))
 
-			print('sem_gt_all')
-			print(type(sem_gt_all))
-			print(sem_gt_all.shape)
-			print(sem_gt_all)
-			print(np.unique(sem_gt_all))
+			# print('sem_gt_all')
+			# print(type(sem_gt_all))
+			# print(sem_gt_all.shape)
+			# print(sem_gt_all)
+			# print(np.unique(sem_gt_all))
 
 			# print('pc_xyz_int')
 			# print(type(pc_xyz_int))
