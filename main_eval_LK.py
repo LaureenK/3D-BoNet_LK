@@ -226,11 +226,10 @@ class Evaluation:
 
 			# print("sem_pred shape: ", sem_pred.shape)
 			# print("pmask_pred shape: ", pmask_pred.shape)
-			# print("ins_pred: ", ins_pred.shape)
+			print("ins_pred: ", ins_pred.shape)
 
-			#ins_sem_dic = Eval_Tools.get_sem_for_ins(ins_by_pts=ins_pred, sem_by_pts=sem_pred)
-				
 			## Block Merging
+			#ins_sem_dic = Eval_Tools.get_sem_for_ins(ins_by_pts=ins_pred, sem_by_pts=sem_pred)
 			#Eval_Tools.BlockMerging(volume, volume_sem, pc[:, 6:9], ins_pred, ins_sem_dic, gap)
 
 			pc_all.append(pc)
