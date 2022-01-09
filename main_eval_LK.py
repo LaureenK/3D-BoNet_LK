@@ -164,7 +164,7 @@ class Evaluation:
 		###
 		if len(scene_result)!=len(test_files): print('file testing error'); exit()
 
-		if not os.path.exists(result_path + 'res_by_file/'): os.makedirs(result_path + 'res_by_scene/')
+		if not os.path.exists(result_path + 'res_by_file/'): os.makedirs(result_path + 'res_by_file/')
 		scipy.io.savemat(result_path + 'res_by_file/allFiles.mat', scene_result, do_compression=True)
 
 		
