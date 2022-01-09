@@ -86,7 +86,7 @@ class Eval_Tools:
 
 		for sem in mean_insSize_by_sem: mean_insSize_by_sem[sem] = np.mean(mean_insSize_by_sem[sem])
 
-		print(mean_insSize_by_sem.shape)
+		#print(mean_insSize_by_sem.shape)
 		print(mean_insSize_by_sem)
 
 		return mean_insSize_by_sem
