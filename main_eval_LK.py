@@ -205,7 +205,7 @@ class Evaluation:
 			#volume_sem = -1 * np.ones([volume_num, volume_num, volume_num]).astype(np.int32)
 
 			print("key count: ", len(scene_result))
-			print(scene_result.keys)
+			print(scene_result.keys())
 	
 			for i in range(len(scene_result)):
 				block = 'file_'+ file_name
