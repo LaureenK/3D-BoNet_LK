@@ -75,7 +75,7 @@ def train(net, data):
 				print('Testing')
 				from main_eval import Evaluation
 				result_path = './log/test_res/' + str(ep).zfill(3)+'_'+test_areas[0] + '/'
-				Evaluation.ttest(net, data, result_path, test_batch_size=20)
+				#Evaluation.ttest(net, data, result_path, test_batch_size=20)
 				
 				#Evaluation.evaluation(dataset_path, train_areas, result_path)
 				print('full eval finished!')
