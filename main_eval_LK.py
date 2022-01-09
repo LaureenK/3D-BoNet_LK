@@ -226,7 +226,7 @@ class Evaluation:
 
 			# print("sem_pred shape: ", sem_pred.shape)
 			# print("pmask_pred shape: ", pmask_pred.shape)
-			print("ins_pred: ", ins_pred.shape)
+			#print("ins_pred: ", ins_pred.shape)
 
 			## Block Merging
 			#ins_sem_dic = Eval_Tools.get_sem_for_ins(ins_by_pts=ins_pred, sem_by_pts=sem_pred)
