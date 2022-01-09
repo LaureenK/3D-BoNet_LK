@@ -177,7 +177,7 @@ class Evaluation:
 		from helper_data_s3dis_LK import Data_Configs as Data_Configs
 		configs = Data_Configs()
 
-		mean_insSize_by_sem = Eval_Tools.get_mean_insSize_by_sem(train_dataset_path)
+		#mean_insSize_by_sem = Eval_Tools.get_mean_insSize_by_sem(train_dataset_path)
 
 		TP_FP_Total = {}
 		for sem_id in configs.sem_ids:
