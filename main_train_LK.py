@@ -80,7 +80,7 @@ def train(net, data):
 				sum_diff += abs(ins1num - ins2num)
 				sum_num += ins2num
 
-				#print("Right num of instances: ", ins1num, " Predicted num: ", ins2num, " Diff: ",abs(ins1num - ins2num), " Total: ", diff_sum)
+				print("Right num of instances: ", ins1num, " Predicted num: ", ins2num, " Diff: ",abs(ins1num - ins2num), " Total: ", diff_sum)
 
 
 			
