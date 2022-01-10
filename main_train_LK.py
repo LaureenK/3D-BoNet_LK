@@ -56,7 +56,7 @@ def train(net, data):
 			sum_diff = 0
 			sum_num = 0
 			print("len(y_psem_pred_sq_raw): ", len(y_psem_pred_sq_raw))
-			for b in len(y_psem_pred_sq_raw):
+			for b in range(len(y_psem_pred_sq_raw)):
 				#sem
 				sem_gt = bat_sem_labels[b]
 				sem_pred_raw = np.asarray(y_psem_pred_sq_raw[b], dtype=np.float16)
