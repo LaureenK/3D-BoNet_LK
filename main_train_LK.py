@@ -10,6 +10,7 @@ NUM_POINT = 2**14
 
 def train(net, data):
 	batchsize = data.train_batch_size
+	num_points = 16384
 	print(batchsize)
 	for ep in range(0, 2,1):
 		print('#################################################')
@@ -63,14 +64,12 @@ def train(net, data):
 				sem_pred_raw = np.asarray(y_psem_pred_sq_raw[b], dtype=np.float16)
 				sem_pred = np.argmax(sem_pred_raw, axis=-1)
 				right_pred = np.count_nonzero(sem_gt==sem_pred)
-				sum_acc += float((right_pred/(NUM_POINT) * 100))
+				sum_acc += float((right_pred/(num_points) * 100))
 
 				print("right pred: ", right_pred)
-				print("num_point: ", NUM_POINT)
-				print("3acc: ", (right_pred/NUM_POINT))
-				print ("1acc: ", float((right_pred/NUM_POINT)) * 100)
-				acc = float((right_pred/(NUM_POINT) * 100))
-				print ("2acc: ", acc)
+				print("num_point: ", num_points)
+				print("1acc: ", (right_pred/num_points))
+	
 				#print("Acc: ", float((right_pred/(NUM_POINT) * 100)), " acc_sum: ", acc_sum)
 
 				#ins
