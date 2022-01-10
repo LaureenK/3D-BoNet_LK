@@ -58,6 +58,7 @@ def train(net, data):
 			sum_num = 0
 
 			for b in range(len(y_psem_pred_sq_raw)):
+				print("before sum_diff: ",sum_diff)
 				#sem
 				sem_gt = bat_sem_labels[b]
 				sem_pred_raw = np.asarray(y_psem_pred_sq_raw[b], dtype=np.float16)
@@ -65,7 +66,9 @@ def train(net, data):
 				right_pred = np.count_nonzero(sem_gt==sem_pred)
 				sum_acc += float((right_pred/(NUM_POINT) * 100))
 
-				print("Acc: ", float((right_pred/(NUM_POINT) * 100)), " sum_acc: ", sum_acc)
+				print("right pred: ", right_pred)
+				print("num_point: ", NUM_POINT)
+				#print("Acc: ", float((right_pred/(NUM_POINT) * 100)), " sum_acc: ", sum_acc)
 
 				#ins
 				ins_gt = bat_ins_labels[b]
@@ -79,7 +82,10 @@ def train(net, data):
 				sum_diff += abs(ins1num - ins2num)
 				sum_num += ins2num
 
-				print("Right num of instances: ", ins1num, " Predicted num: ", ins2num, " Diff: ",abs(ins1num - ins2num), " Total: ", sum_diff)
+				print("diff: ", abs(ins1num - ins2num))
+				print("after sum_diff: ",sum_diff)
+
+				#print("Right num of instances: ", ins1num, " Predicted num: ", ins2num, " Diff: ",abs(ins1num - ins2num), " Total: ", sum_diff)
 
 
 			
