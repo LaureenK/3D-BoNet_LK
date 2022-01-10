@@ -10,6 +10,7 @@ NUM_POINT = 2**14
 
 def train(net, data):
 	batchsize = data.train_batch_size
+	print(batchsize)
 	for ep in range(0, 2,1):
 		print('#################################################')
 		logging.warning('Start epoch %d' % ep)
@@ -81,7 +82,7 @@ def train(net, data):
 				print("Right num of instances: ", ins1num, " Predicted num: ", ins2num, " Diff: ",abs(ins1num - ins2num), " Total: ", sum_diff)
 
 
-
+			
 			acc_sum += float((sum_acc/(batchsize)))
 			diff_sum += float((sum_diff/(batchsize)))
 			num_sum += float((sum_num/(batchsize)))
