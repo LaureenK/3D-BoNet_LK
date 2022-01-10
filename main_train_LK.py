@@ -29,9 +29,6 @@ def train(net, data):
 			###### training
 			bat_pc, bat_sem_labels, bat_ins_labels, bat_psem_onehot, bat_bbvert, bat_pmask = data.load_train_next_batch()
 
-			print("\nbat_sem_labels: ",bat_sem_labels.shape)
-			print("bat_ins_labels: ",bat_ins_labels.shape)
-
 			# print("bat_pc[:, :, 0:9]")
 			# print(type(bat_pc[:, :, 0:9]))
 			# print(bat_pc[:, :, 0:9].shape)
@@ -58,7 +55,8 @@ def train(net, data):
 			sum_acc = 0
 			sum_diff = 0
 			sum_num = 0
-			for b in len(sem_pred_raw):
+			print("len(y_psem_pred_sq_raw): ", len(y_psem_pred_sq_raw))
+			for b in len(y_psem_pred_sq_raw):
 				#sem
 				sem_gt = bat_sem_labels[b]
 				sem_pred_raw = np.asarray(y_psem_pred_sq_raw[b], dtype=np.float16)
