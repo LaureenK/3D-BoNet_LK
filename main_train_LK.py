@@ -2,9 +2,14 @@ import os
 import numpy as np
 
 import logging
+
+from helper_data_s3dis_LK import NUM_POINTS
 logging.basicConfig(format='%(asctime)s %(message)s')
 
+NUM_POINT = 2**14
+
 def train(net, data):
+	batchsize = data.train_batch_size
 	for ep in range(0, 2,1):
 		print('#################################################')
 		logging.warning('Start epoch %d' % ep)
@@ -14,6 +19,11 @@ def train(net, data):
 		data.shuffle_train_files(ep)
 		total_train_batch_num = data.total_train_batch_num
 		print('total train batch num:', total_train_batch_num)
+
+		#acc
+		acc_sum = 0.0
+		diff_sum = 0.0
+		num_sum = 0.0
 
 		for i in range(total_train_batch_num):
 			###### training
@@ -39,20 +49,39 @@ def train(net, data):
 			# print(bat_psem_onehot.shape)
 
 			# print("############################################")
-			print("Session run")
+			#print("Session run")
 			y_psem_pred_sq_raw, y_bbvert_pred_sq_raw, y_bbscore_pred_sq_raw, y_pmask_pred_sq_raw, _, ls_psemce, ls_bbvert_all, ls_bbvert_l2, ls_bbvert_ce, ls_bbvert_iou, ls_bbscore, ls_pmask = net.sess.run([
 			net.y_psem_pred, net.y_bbvert_pred_raw, net.y_bbscore_pred_raw, net.y_pmask_pred_raw, net.optim, net.psemce_loss, net.bbvert_loss, net.bbvert_loss_l2, net.bbvert_loss_ce, net.bbvert_loss_iou,net.bbscore_loss, net.pmask_loss],
 			feed_dict={net.X_pc:bat_pc[:, :, 0:3], net.Y_bbvert:bat_bbvert, net.Y_pmask:bat_pmask, net.Y_psem:bat_psem_onehot, net.lr:l_rate, net.is_train:True})
 
 			#acc
-			sem_pred_raw = np.asarray(y_psem_pred_sq_raw[0], dtype=np.float16)
-			bbvert_pred_raw = np.asarray(y_bbvert_pred_sq_raw[0], dtype=np.float16)
-			bbscore_pred_raw = np.asarray(y_bbscore_pred_sq_raw[0], dtype=np.float16)
-			pmask_pred_raw = np.asarray(y_pmask_pred_sq_raw[0], dtype=np.float16)	
+			sum_acc = 0
+			sum_diff = 0
+			sum_num = 0
+			for b in len(sem_pred_raw):
+				#sem
+				sem_gt = bat_sem_labels[b]
+				sem_pred_raw = np.asarray(y_psem_pred_sq_raw[b], dtype=np.float16)
+				sem_pred = np.argmax(sem_pred_raw, axis=-1)
+				right_pred = np.count_nonzero(sem_gt==sem_pred)
+				sum_acc += float((right_pred/(NUM_POINT) * 100))
 
-			sem_pred = np.argmax(sem_pred_raw, axis=-1)
-			pmask_pred = pmask_pred_raw * np.tile(bbscore_pred_raw[:, None], [1, pmask_pred_raw.shape[-1]])
-			ins_pred = np.argmax(pmask_pred, axis=-2)
+				#ins
+				ins_gt = bat_ins_labels[b]
+				bbscore_pred_raw = np.asarray(y_bbscore_pred_sq_raw[b], dtype=np.float16)
+				pmask_pred_raw = np.asarray(y_pmask_pred_sq_raw[b], dtype=np.float16)
+				pmask_pred = pmask_pred_raw * np.tile(bbscore_pred_raw[:, None], [1, pmask_pred_raw.shape[-1]])
+				ins_pred = np.argmax(pmask_pred, axis=-2)
+
+				ins1num = len(np.unique(ins_gt))
+				ins2num = len(np.unique(ins_pred))
+				sum_diff += abs(ins1num - ins2num)
+				sum_num += ins2num
+
+			acc_sum += float((sum_acc/(batchsize)))
+			diff_sum += float((sum_diff/(batchsize)))
+			num_sum += float((sum_num/(batchsize)))
+
 
 			print("\nsem_pred: ",sem_pred.shape)
 			print("ins_pred: ",ins_pred.shape)
@@ -97,6 +126,11 @@ def train(net, data):
 			# 	print('full eval finished!')
 
 		logging.warning('End epoch %d' % ep)
+		logging.warning('Semantic mean accuracy: %.2f' % ((acc_sum / float(total_train_batch_num))))
+		logging.warning('Instance mean difference: %.2f' % (diff_sum / float(total_train_batch_num)))
+		logging.warning('Instance mean: %.2f' % (num_sum / float(total_train_batch_num)))
+
+
 
 
 ############
