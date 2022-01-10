@@ -64,13 +64,9 @@ def train(net, data):
 				sem_pred_raw = np.asarray(y_psem_pred_sq_raw[b], dtype=np.float16)
 				sem_pred = np.argmax(sem_pred_raw, axis=-1)
 				right_pred = np.count_nonzero(sem_gt==sem_pred)
-				sum_acc += float((right_pred/(num_points) * 100))
-
-				print("right pred: ", right_pred)
-				print("num_point: ", num_points)
-				print("1acc: ", (float(right_pred)/float(num_points)))
+				sum_acc += ((float(right_pred)/float(num_points)) * 100)
 	
-				#print("Acc: ", float((right_pred/(NUM_POINT) * 100)), " acc_sum: ", acc_sum)
+				print("Acc: ", ((float(right_pred)/float(num_points)) * 100), " acc_sum: ", acc_sum)
 
 				#ins
 				ins_gt = bat_ins_labels[b]
