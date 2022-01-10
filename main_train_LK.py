@@ -78,13 +78,14 @@ def train(net, data):
 				sum_diff += abs(ins1num - ins2num)
 				sum_num += ins2num
 
+				print("sem_gt: ",sem_gt.shape)
+				print("ins_gt: ",ins_gt.shape)
+				print("sem_pred: ",sem_pred.shape)
+				print("ins_pred: ",ins_pred.shape)
+
 			acc_sum += float((sum_acc/(batchsize)))
 			diff_sum += float((sum_diff/(batchsize)))
 			num_sum += float((sum_num/(batchsize)))
-
-
-			print("\nsem_pred: ",sem_pred.shape)
-			print("ins_pred: ",ins_pred.shape)
 
 
 			# #print("Done")
