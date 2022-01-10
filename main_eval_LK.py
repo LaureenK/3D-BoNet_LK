@@ -193,7 +193,7 @@ class Evaluation:
 		for file in res_files:
 			file_name = file.split('/')[-1].split('.')[0]
 
-			print('eval scene', file_name)
+			#print('eval scene', file_name)
 			scene_result = scipy.io.loadmat(result_path+'res_by_file/'+file, verify_compressed_data_integrity=False)
 
 			pc_all = []; ins_gt_all = []; sem_pred_all = []; sem_gt_all = []; ins_pred_all= []

@@ -96,13 +96,13 @@ def train(net, data):
 				net.sum_writer_train.add_summary(sum_train, ep*total_train_batch_num + i)
 			#print ('ep', ep, 'i', i, 'psemce', ls_psemce, 'bbvert', ls_bbvert_all, 'l2', ls_bbvert_l2, 'ce', ls_bbvert_ce, 'siou', ls_bbvert_iou, 'bbscore', ls_bbscore, 'pmask', ls_pmask)
 
-			if i%500==0:
+			if i%1000==0:
 				print ('ep', ep, 'i', i, 'psemce', ls_psemce, 'bbvert', ls_bbvert_all, 'l2', ls_bbvert_l2, 'ce', ls_bbvert_ce, 'siou', ls_bbvert_iou, 'bbscore', ls_bbscore, 'pmask', ls_pmask)
 
 
 			#print("testing")
 			###### random testing
-			if i%200==0:
+			if i%1000==0:
 				bat_pc, _, _, bat_psem_onehot, bat_bbvert, bat_pmask = data.load_test_next_batch_random()
 				ls_psemce, ls_bbvert_all, ls_bbvert_l2, ls_bbvert_ce, ls_bbvert_iou, ls_bbscore, ls_pmask, sum_test, pred_bborder = net.sess.run([
 				net.psemce_loss, net.bbvert_loss, net.bbvert_loss_l2, net.bbvert_loss_ce, net.bbvert_loss_iou, net.bbscore_loss, net.pmask_loss, net.sum_merged, net.pred_bborder],
@@ -121,7 +121,21 @@ def train(net, data):
 			##### full eval, if needed
 			#if ep%5==0 and i==total_train_batch_num-1:
 			
-			if i==(total_train_batch_num-1):
+			# if i==(total_train_batch_num-1):
+			# 	print('Testing')
+			# 	from main_eval_LK import Evaluation
+			# 	result_path = './log/test_res/test_LK/'
+			# 	Evaluation.ttest(net, data, result_path, test_batch_size=1)
+
+			# 	Evaluation.evaluation(train_dataset_path, result_path)
+			# 	print('full eval finished!')
+
+		logging.warning('End epoch %d' % ep)
+		logging.warning('Semantic mean accuracy: %.2f' % ((acc_sum / float(total_train_batch_num))))
+		logging.warning('Instance mean difference: %.2f' % (diff_sum / float(total_train_batch_num)))
+		logging.warning('Instance mean: %.2f' % (num_sum / float(total_train_batch_num)))
+
+		if ep%50==0:
 				print('Testing')
 				from main_eval_LK import Evaluation
 				result_path = './log/test_res/test_LK/'
@@ -129,11 +143,6 @@ def train(net, data):
 
 				Evaluation.evaluation(train_dataset_path, result_path)
 				print('full eval finished!')
-
-		logging.warning('End epoch %d' % ep)
-		logging.warning('Semantic mean accuracy: %.2f' % ((acc_sum / float(total_train_batch_num))))
-		logging.warning('Instance mean difference: %.2f' % (diff_sum / float(total_train_batch_num)))
-		logging.warning('Instance mean: %.2f' % (num_sum / float(total_train_batch_num)))
 
 
 
