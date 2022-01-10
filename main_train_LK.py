@@ -67,7 +67,8 @@ def train(net, data):
 
 				print("right pred: ", right_pred)
 				print("num_point: ", NUM_POINT)
-				print ("1acc: ", float((right_pred/(NUM_POINT) * 100)))
+				print("3acc: ", (right_pred/NUM_POINT))
+				print ("1acc: ", float((right_pred/NUM_POINT)) * 100)
 				acc = float((right_pred/(NUM_POINT) * 100))
 				print ("2acc: ", acc)
 				#print("Acc: ", float((right_pred/(NUM_POINT) * 100)), " acc_sum: ", acc_sum)
