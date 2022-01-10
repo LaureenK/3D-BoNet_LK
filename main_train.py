@@ -4,7 +4,7 @@ import logging
 logging.basicConfig(format='%(asctime)s %(message)s')
 
 def train(net, data):
-	for ep in range(0, 1,1):
+	for ep in range(0, 51,1):
 		print('#################################################')
 		logging.warning('Start epoch %d' % ep)
 
