@@ -66,7 +66,7 @@ def train(net, data):
 				right_pred = np.count_nonzero(sem_gt==sem_pred)
 				sum_acc += ((float(right_pred)/float(num_points)) * 100)
 	
-				print("Acc: ", ((float(right_pred)/float(num_points)) * 100), " acc_sum: ", acc_sum)
+				#print("Acc: ", ((float(right_pred)/float(num_points)) * 100))
 
 				#ins
 				ins_gt = bat_ins_labels[b]
@@ -80,7 +80,7 @@ def train(net, data):
 				sum_diff += abs(ins1num - ins2num)
 				sum_num += ins2num
 
-				print("Right num of instances: ", ins1num, " Predicted num: ", ins2num, " Diff: ",abs(ins1num - ins2num), " Total: ", diff_sum)
+				#print("Right num of instances: ", ins1num, " Predicted num: ", ins2num, " Diff: ",abs(ins1num - ins2num), " Total: ", diff_sum)
 
 
 			
