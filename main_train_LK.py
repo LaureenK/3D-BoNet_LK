@@ -55,7 +55,7 @@ def train(net, data):
 			sum_acc = 0
 			sum_diff = 0
 			sum_num = 0
-			print("len(y_psem_pred_sq_raw): ", len(y_psem_pred_sq_raw))
+
 			for b in range(len(y_psem_pred_sq_raw)):
 				#sem
 				sem_gt = bat_sem_labels[b]
@@ -63,6 +63,8 @@ def train(net, data):
 				sem_pred = np.argmax(sem_pred_raw, axis=-1)
 				right_pred = np.count_nonzero(sem_gt==sem_pred)
 				sum_acc += float((right_pred/(NUM_POINT) * 100))
+
+				print("Acc: ", float((right_pred/(NUM_POINT) * 100)), " sum_acc: ", sum_acc)
 
 				#ins
 				ins_gt = bat_ins_labels[b]
@@ -76,10 +78,9 @@ def train(net, data):
 				sum_diff += abs(ins1num - ins2num)
 				sum_num += ins2num
 
-				print("sem_gt: ",sem_gt.shape)
-				print("ins_gt: ",ins_gt.shape)
-				print("sem_pred: ",sem_pred.shape)
-				print("ins_pred: ",ins_pred.shape)
+				print("Right num of instances: ", ins1num, " Predicted num: ", ins2num, " Diff: ",abs(ins1num - ins2num), " Total: ", sum_diff)
+
+
 
 			acc_sum += float((sum_acc/(batchsize)))
 			diff_sum += float((sum_diff/(batchsize)))
