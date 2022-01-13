@@ -81,15 +81,15 @@ class BoNet:
 		radius4 = 16
 
     	#alle ein hoeher Tensorflow error
-		# npoint1 = 1024
-		# npoint2 = 256
-		# npoint3 = 64
-		# npoint4 = 64
-
-		npoint1 = 2048
-		npoint2 = 512
-		npoint3 = 128
+		npoint1 = 1024
+		npoint2 = 256
+		npoint3 = 64
 		npoint4 = 64
+
+		# npoint1 = 2048
+		# npoint2 = 512
+		# npoint3 = 128
+		# npoint4 = 64
 
 		l1_xyz, l1_points, l1_indices = pnet2.pointnet_sa_module(l0_xyz, l0_points, npoint=npoint1, radius=radius1, nsample=32,
 			mlp=[32, 32, 64], mlp2=None, group_all=False, is_training=None, bn_decay=None, scope='layer1')
