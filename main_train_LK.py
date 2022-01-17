@@ -130,12 +130,13 @@ def train(net, data):
 			# 	Evaluation.evaluation(train_dataset_path, result_path)
 			# 	print('full eval finished!')
 
-		logging.warning('End epoch %d' % ep)
+		
 		logging.warning('Semantic mean accuracy: %.2f' % ((acc_sum / float(total_train_batch_num))))
 		logging.warning('Instance mean difference: %.2f' % (diff_sum / float(total_train_batch_num)))
 		logging.warning('Instance mean: %.2f' % (num_sum / float(total_train_batch_num)))
+		logging.warning('End epoch %d' % ep)
 
-		if ep%50==0:
+		if ep != 0 and ep%50==0:
 				print('Testing')
 				from main_eval_LK import Evaluation
 				result_path = './log/test_res/test_LK/'
