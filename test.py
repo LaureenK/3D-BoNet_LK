@@ -36,7 +36,7 @@ def safeFile(pts, pred_sem, labels, file_path):
 	name = OUTPUTPATH + filename + ".csv"
 	print("Save ", name)
 	
-	#np.savetxt(name, all, delimiter=" ", header=head, fmt='%d %d %.10f %d %d', comments='//')
+	np.savetxt(name, all, delimiter=" ", header=head, fmt='%d %d %.10f %d %d', comments='//')
 
 def load_net(model_path):
 		#######
@@ -77,54 +77,31 @@ def test():
 
 	data = Data(train_dataset_path, test_dataset_path, train_batch_size=1)
 
-	# for file_idx in range(len_pts_files):
-	# 	file_path = ROOM_PATH_LIST[file_idx]
-	# 	file_list = []
-	# 	file_list.append(file_path)
+	for file_idx in range(len_pts_files):
+		file_path = ROOM_PATH_LIST[file_idx]
+		file_list = []
+		file_list.append(file_path)
 		
-	# 	print("Processsing: File [%d] of [%d]" % (file_idx, len_pts_files))
+		print("Processsing: File [%d] of [%d]" % (file_idx, len_pts_files))
 
-	# 	bat_pc, bat_sem_gt, bat_ins_gt, bat_psem_onehot, bat_bbvert, bat_pmask, bat_files = data.load_test_next_batch_sq(bat_files=file_list)
+		bat_pc, bat_sem_gt, bat_ins_gt, bat_psem_onehot, bat_bbvert, bat_pmask, bat_files = data.load_test_next_batch_sq(bat_files=file_list)
 
-	# 	#run session
-	# 	[y_psem_pred_sq_raw, y_bbvert_pred_sq_raw, y_bbscore_pred_sq_raw, y_pmask_pred_sq_raw] = \
-	# 	net.sess.run([net.y_psem_pred, net.y_bbvert_pred_raw, net.y_bbscore_pred_raw, net.y_pmask_pred_raw],feed_dict={net.X_pc: bat_pc[:, :, 0:3], net.is_train: False})
+		#run session
+		[y_psem_pred_sq_raw, y_bbvert_pred_sq_raw, y_bbscore_pred_sq_raw, y_pmask_pred_sq_raw] = \
+		net.sess.run([net.y_psem_pred, net.y_bbvert_pred_raw, net.y_bbscore_pred_raw, net.y_pmask_pred_raw],feed_dict={net.X_pc: bat_pc[:, :, 0:3], net.is_train: False})
 
-	# 	pc = np.asarray(bat_pc[0], dtype=np.float16)
-	# 	sem_pred_raw = np.asarray(y_psem_pred_sq_raw[0], dtype=np.float16)
-	# 	bbvert_pred_raw = np.asarray(y_bbvert_pred_sq_raw[0], dtype=np.float16)
-	# 	bbscore_pred_raw = np.asarray(y_bbscore_pred_sq_raw[0], dtype=np.float16)
-	# 	pmask_pred_raw = np.asarray(y_pmask_pred_sq_raw[0], dtype=np.float16)
+		pc = np.asarray(bat_pc[0], dtype=np.float16)
+		sem_pred_raw = np.asarray(y_psem_pred_sq_raw[0], dtype=np.float16)
+		bbvert_pred_raw = np.asarray(y_bbvert_pred_sq_raw[0], dtype=np.float16)
+		bbscore_pred_raw = np.asarray(y_bbscore_pred_sq_raw[0], dtype=np.float16)
+		pmask_pred_raw = np.asarray(y_pmask_pred_sq_raw[0], dtype=np.float16)
 
-	# 	sem_pred = np.argmax(sem_pred_raw, axis=-1)
-	# 	pmask_pred = pmask_pred_raw * np.tile(bbscore_pred_raw[:, None], [1, pmask_pred_raw.shape[-1]])
-	# 	ins_pred = np.argmax(pmask_pred, axis=-2)
+		sem_pred = np.argmax(sem_pred_raw, axis=-1)
+		pmask_pred = pmask_pred_raw * np.tile(bbscore_pred_raw[:, None], [1, pmask_pred_raw.shape[-1]])
+		ins_pred = np.argmax(pmask_pred, axis=-2)
 
-	# 	safeFile(pc, sem_pred, ins_pred, file_path)
+		safeFile(pc, sem_pred, ins_pred, file_path)
 
-	file_path = ROOM_PATH_LIST[0]
-	file_list = []
-	file_list.append(file_path)
-		
-	print("Processsing: File [%d] of [%d]" % (0, len_pts_files))
-
-	bat_pc, bat_sem_gt, bat_ins_gt, bat_psem_onehot, bat_bbvert, bat_pmask, bat_files = data.load_test_next_batch_sq(bat_files=file_list)
-
-	#run session
-	[y_psem_pred_sq_raw, y_bbvert_pred_sq_raw, y_bbscore_pred_sq_raw, y_pmask_pred_sq_raw] = \
-	net.sess.run([net.y_psem_pred, net.y_bbvert_pred_raw, net.y_bbscore_pred_raw, net.y_pmask_pred_raw],feed_dict={net.X_pc: bat_pc[:, :, 0:3], net.is_train: False})
-
-	pc = np.asarray(bat_pc[0], dtype=np.float16)
-	sem_pred_raw = np.asarray(y_psem_pred_sq_raw[0], dtype=np.float16)
-	bbvert_pred_raw = np.asarray(y_bbvert_pred_sq_raw[0], dtype=np.float16)
-	bbscore_pred_raw = np.asarray(y_bbscore_pred_sq_raw[0], dtype=np.float16)
-	pmask_pred_raw = np.asarray(y_pmask_pred_sq_raw[0], dtype=np.float16)
-
-	sem_pred = np.argmax(sem_pred_raw, axis=-1)
-	pmask_pred = pmask_pred_raw * np.tile(bbscore_pred_raw[:, None], [1, pmask_pred_raw.shape[-1]])
-	ins_pred = np.argmax(pmask_pred, axis=-2)
-
-	safeFile(pc, sem_pred, ins_pred, file_path)
 
 
 
