@@ -20,7 +20,7 @@ class Data_Configs:
 
     points_cc = 3 #3?
     sem_num = len(sem_names)
-    ins_max_num = 31 #32 Fehler
+    ins_max_num = 24#31 #32 Fehler
     # train_pts_num = 16384
     # test_pts_num = 16384 
 
