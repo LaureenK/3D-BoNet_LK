@@ -7,9 +7,9 @@ import glob
 import h5py
 import helper_data_s3dis_LK
 
-MODELPATH = "/home/klein/bonet/results/run2/log/train_mod/model050.cptk"
+MODELPATH = "/home/klein/bonet/results/run3/log/train_mod/model050.cptk"
 INPUTPATH = "/hdd/klein/prepared/TestFiles/"
-OUTPUTPATH = "/home/klein/bonet/results/run2/result/"
+OUTPUTPATH = "/home/klein/bonet/results/run3/result/"
 
 ROOM_PATH_LIST = glob.glob(os.path.join(INPUTPATH, "*.csv"))
 len_pts_files = len(ROOM_PATH_LIST)
