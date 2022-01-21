@@ -75,10 +75,10 @@ class BoNet:
 		l0_xyz = X_pc[:, :, :3]
 		l0_points = X_pc[:, :, 3:]
 
-		radius1 = 2
-		radius2 = 4
-		radius3 = 8
-		radius4 = 16
+		radius1 = 1
+		radius2 = 2
+		radius3 = 4
+		radius4 = 8
 
     	#alle ein hoeher Tensorflow error
 		# npoint1 = 1024
