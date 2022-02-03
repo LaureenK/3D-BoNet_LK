@@ -63,33 +63,14 @@ class BoNet:
 	def backbone_pointnet2(self, X_pc, is_train=None):
 		import helper_pointnet2 as pnet2
 		points_num = tf.shape(X_pc)[1]
-		#points_num = X_pc.get_shape()[1].value
-
-		#print("1:points_num: ", points_num)
-		#print(X_pc.shape[1])
-		#print(X_pc.get_shape()[1].value)
-		
-		#l0_xyz = X_pc[:,:,0:3]
-		#l0_points = X_pc[:,:,3:9]
 
 		l0_xyz = X_pc[:, :, :3]
 		l0_points = X_pc[:, :, 3:]
 
-		radius1 = 1
-		radius2 = 2
-		radius3 = 4
-		radius4 = 8
-
-		# radius1 = 2
-		# radius2 = 4
-		# radius3 = 8
-		# radius4 = 16
-
-    	#alle ein hoeher Tensorflow error
-		# npoint1 = 1024
-		# npoint2 = 256
-		# npoint3 = 64
-		# npoint4 = 64
+		radius1 = 9,6
+		radius2 = 19,2
+		radius3 = 38,4
+		radius4 = 76,8
 
 		npoint1 = 2048
 		npoint2 = 512

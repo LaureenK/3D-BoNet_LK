@@ -6,7 +6,6 @@ import copy
 from random import shuffle
 import h5py
 
-#NUM_POINTS = 2**14
 NUM_POINTS = 2**14
 
 def unison_shuffled_copies(a, b, c):
@@ -18,11 +17,9 @@ class Data_Configs:
     sem_names = ['person', 'dog', 'bicycle', 'sportsball']
     sem_ids = [0,1,2,3]
 
-    points_cc = 3 #3?
+    points_cc = 3 
     sem_num = len(sem_names)
     ins_max_num = 31 #32 Fehler
-    # train_pts_num = 16384
-    # test_pts_num = 16384 
 
     train_pts_num = NUM_POINTS
     test_pts_num = NUM_POINTS

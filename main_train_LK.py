@@ -31,24 +31,6 @@ def train(net, data):
 			###### training
 			bat_pc, bat_sem_labels, bat_ins_labels, bat_psem_onehot, bat_bbvert, bat_pmask = data.load_train_next_batch()
 
-			# print("bat_pc[:, :, 0:9]")
-			# print(type(bat_pc[:, :, 0:9]))
-			# print(bat_pc[:, :, 0:9].shape)
-
-			# print("bat_bbvert")
-			# print(type(bat_bbvert))
-			# print(bat_bbvert.shape)
-
-			# print("bat_pmask")
-			# print(type(bat_pmask))
-			# print(bat_pmask.shape)
-
-			# print("bat_psem_onehot")
-			# print(type(bat_psem_onehot))
-			# print(bat_psem_onehot.shape)
-
-			# print("############################################")
-			#print("Session run")
 			y_psem_pred_sq_raw, y_bbvert_pred_sq_raw, y_bbscore_pred_sq_raw, y_pmask_pred_sq_raw, _, ls_psemce, ls_bbvert_all, ls_bbvert_l2, ls_bbvert_ce, ls_bbvert_iou, ls_bbscore, ls_pmask = net.sess.run([
 			net.y_psem_pred, net.y_bbvert_pred_raw, net.y_bbscore_pred_raw, net.y_pmask_pred_raw, net.optim, net.psemce_loss, net.bbvert_loss, net.bbvert_loss_l2, net.bbvert_loss_ce, net.bbvert_loss_iou,net.bbscore_loss, net.pmask_loss],
 			feed_dict={net.X_pc:bat_pc[:, :, 0:3], net.Y_bbvert:bat_bbvert, net.Y_pmask:bat_pmask, net.Y_psem:bat_psem_onehot, net.lr:l_rate, net.is_train:True})

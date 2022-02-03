@@ -238,39 +238,39 @@ class Evaluation:
 			pc_xyz_int = (pc_all[:, 6:9] / gap).astype(np.int32)
 			ins_pred_all = volume[tuple(pc_xyz_int.T)]
 
-			print('pc_all')
-			print(type(pc_all))
-			print(pc_all.shape)
-			#print(pc_all)
+			# print('pc_all')
+			# print(type(pc_all))
+			# print(pc_all.shape)
+			# #print(pc_all)
 
-			print('ins_gt_all')
-			print(type(ins_gt_all))
-			print(ins_gt_all.shape)
-			print(ins_gt_all)
-			print(np.unique(ins_gt_all))
+			# print('ins_gt_all')
+			# print(type(ins_gt_all))
+			# print(ins_gt_all.shape)
+			# print(ins_gt_all)
+			# print(np.unique(ins_gt_all))
 
-			print('sem_pred_all')
-			print(type(sem_pred_all))
-			print(sem_pred_all.shape)
-			print(sem_pred_all)
-			print(np.unique(sem_pred_all))
+			# print('sem_pred_all')
+			# print(type(sem_pred_all))
+			# print(sem_pred_all.shape)
+			# print(sem_pred_all)
+			# print(np.unique(sem_pred_all))
 
-			print('sem_gt_all')
-			print(type(sem_gt_all))
-			print(sem_gt_all.shape)
-			print(sem_gt_all)
-			print(np.unique(sem_gt_all))
+			# print('sem_gt_all')
+			# print(type(sem_gt_all))
+			# print(sem_gt_all.shape)
+			# print(sem_gt_all)
+			# print(np.unique(sem_gt_all))
 
-			print('pc_xyz_int')
-			print(type(pc_xyz_int))
-			print(pc_xyz_int.shape)
-			#print(pc_xyz_int)
+			# print('pc_xyz_int')
+			# print(type(pc_xyz_int))
+			# print(pc_xyz_int.shape)
+			# #print(pc_xyz_int)
 
-			print('ins_pred_all')
-			print(type(ins_pred_all))
-			print(ins_pred_all.shape)
-			print(ins_pred_all)
-			print(np.unique(ins_pred_all))
+			# print('ins_pred_all')
+			# print(type(ins_pred_all))
+			# print(ins_pred_all.shape)
+			# print(ins_pred_all)
+			# print(np.unique(ins_pred_all))
 
 			#### if you need to visulize, please uncomment the follow lines
 			#from helper_data_plot import Plot as Plot
@@ -284,14 +284,22 @@ class Evaluation:
 			###################
 			# pred ins
 			ins_pred_by_sem = {}
+			#erstelle liste für alle instancen nach semantischem Label
 			for sem in configs.sem_ids: ins_pred_by_sem[sem] = []
+
 			ins_idx, cnts = np.unique(ins_pred_all, return_counts=True)
+
 			for ins_id, cn in zip(ins_idx, cnts):
-				if ins_id <= -1: continue
+				if ins_id <= -1: 
+					continue
+
 				tmp = (ins_pred_all == ins_id)
 				sem = scipy.stats.mode(sem_pred_all[tmp])[0][0]
+
 				if cn <= 0.3*mean_insSize_by_sem[sem]: continue  # remove small instances
 				ins_pred_by_sem[sem].append(tmp)
+
+
 			# gt ins
 			ins_gt_by_sem = {}
 			for sem in configs.sem_ids: ins_gt_by_sem[sem] = []
