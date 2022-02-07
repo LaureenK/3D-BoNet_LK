@@ -7,9 +7,9 @@ import glob
 import h5py
 import helper_data_s3dis_LK
 
-MODELPATH = "/home/klein/bonet/results/run4/log/train_mod/model050.cptk"
+MODELPATH = "/home/klein/bonet/results/run5/log/train_mod/model050.cptk"
 INPUTPATH = "/hdd/klein/prepared/TestFiles/"
-OUTPUTPATH = "/home/klein/bonet/results/run4/result/"
+OUTPUTPATH = "/home/klein/bonet/results/run5/result/"
 
 ROOM_PATH_LIST = glob.glob(os.path.join(INPUTPATH, "*.csv"))
 len_pts_files = len(ROOM_PATH_LIST)
@@ -17,32 +17,34 @@ len_pts_files = len(ROOM_PATH_LIST)
 if not os.path.exists(OUTPUTPATH):
     os.makedirs(OUTPUTPATH)
 
-def safeFile(pts, gt_sem, gt_group, pred_sem, labels, file_path):
-    filename = file_path.split('/')[-1].split('.')[0]
-    #print(filename)
-
-    with open(file_path, 'r') as fd:
-        head = fd.readlines()[0]
-    
-    gt_sem = np.reshape(gt_sem, (len(pred_sem),1))
-    gt_group = np.reshape(gt_group,(len(labels),1))
-    sem_labels = np.reshape(pred_sem, (len(pred_sem),1))
-    instances = np.reshape(labels,(len(labels),1))
+def safeFile(pts, gt_sem, gt_group, pred_sem, labels, sem_pred_val, ins_pred_val, file_path):
+	filename = file_path.split('/')[-1].split('.')[0]
+	#print(filename)
+	
+	with open(file_path, 'r') as fd:
+		head = fd.readlines()[0]
+	
+	gt_sem = np.reshape(gt_sem, (len(pred_sem),1))
+	gt_group = np.reshape(gt_group,(len(labels),1))
+	sem_labels = np.reshape(pred_sem, (len(pred_sem),1))
+	instances = np.reshape(labels,(len(labels),1))
+	sem_conf = np.reshape(sem_pred_val, (len(sem_pred_val),1))
+	instances_conf = np.reshape(ins_pred_val,(len(ins_pred_val),1))
 
     #sem_labels = pred_sem
     #instances = labels
-
-    all = np.append(pts, gt_sem, axis=1)
-    all = np.append(all, gt_group, axis=1)
-    all = np.append(all, sem_labels, axis=1)
-    all = np.append(all, instances, axis=1)
+	all = np.append(pts, gt_sem, axis=1)
+	all = np.append(all, gt_group, axis=1)
+	all = np.append(all, sem_labels, axis=1)
+	all = np.append(all, instances, axis=1)
+	all = np.append(all, sem_conf, axis=1)
+	all = np.append(all, instances_conf, axis=1)
 
     #print(all.shape)
-
-    name = OUTPUTPATH + filename + ".csv"
-    print("Save ", name)
-    
-    np.savetxt(name, all, delimiter=" ", header=head, fmt='%d %d %.10f %d %d %d %d', comments='//')
+	name = OUTPUTPATH + filename + ".csv"
+	print("Save ", name)
+	
+	np.savetxt(name, all, delimiter=" ", header=head, fmt='%d %d %.10f %d %d %d %d %.3f %.3f', comments='//')
 
 def load_net(model_path):
 		#######
@@ -103,10 +105,12 @@ def test():
 		pmask_pred_raw = np.asarray(y_pmask_pred_sq_raw[0], dtype=np.float16)
 
 		sem_pred = np.argmax(sem_pred_raw, axis=-1)
+		sem_pred_val = np.max(sem_pred_raw, axis=-1)
 		pmask_pred = pmask_pred_raw * np.tile(bbscore_pred_raw[:, None], [1, pmask_pred_raw.shape[-1]])
 		ins_pred = np.argmax(pmask_pred, axis=-2)
+		ins_pred_val = np.max(pmask_pred, axis=-2)
 
-		safeFile(pc, bat_sem_gt, bat_ins_gt, sem_pred, ins_pred, file_path)
+		safeFile(pc, bat_sem_gt, bat_ins_gt, sem_pred, ins_pred, sem_pred_val, ins_pred_val, file_path)
 
 
 
