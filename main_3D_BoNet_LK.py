@@ -67,10 +67,29 @@ class BoNet:
 		l0_xyz = X_pc[:, :, :3]
 		l0_points = X_pc[:, :, 3:]
 
-		radius1 = 19.2
-		radius2 = 38.4
-		radius3 = 76.8
-		radius4 = 153.6
+		#run3
+		radius1 = 2
+		radius2 = 4
+		radius3 = 8
+		radius4 = 16
+
+		#run4
+		# radius1 = 1
+		# radius2 = 2
+		# radius3 = 4
+		# radius4 = 8
+
+		#run5
+		# radius1 = 9.6
+		# radius2 = 19.2
+		# radius3 = 38.4
+		# radius4 = 76.8
+
+		#run6
+		# radius1 = 19.2
+		# radius2 = 38.4
+		# radius3 = 76.8
+		# radius4 = 153.6
 
 		npoint1 = 2048
 		npoint2 = 512

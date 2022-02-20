@@ -273,7 +273,58 @@ def mapInstance(points, labels, instances):
 
     return points, labels, instances
 
+def prepareData(filelist):
+    random.seed(1337) 
+    point_list = []
+    semantic_label_list = []
+    instance_label_list = []
+
+    i=0
+    while i < len(filelist):
+        points, labels, instances = load_and_upscale(filelist[i])
+        points, labels, instances = mapInstance(points, labels, instances)
+
+        points = np.asarray(points)
+        labels = np.asarray(labels)
+        instances = np.asarray(instances)
+
+
+        if(len(points) > NUM_POINTS):
+            small_points, small_labels, small_instances = downscale(points, labels, instances)
+            small_points = np.asarray(small_points)
+            small_labels = np.asarray(small_labels)
+            small_instances = np.asarray(small_instances)
+
+            j = 0
+
+            while j < small_points.shape[0]:
+                points1 = small_points[j]
+                labels1 = small_labels[j]
+                instances1 = small_instances[j]
+                
+                point_list.append(points1)
+                semantic_label_list.append(labels1)
+                instance_label_list.append(instances1)
+
+                j = j + 1
+
+
+        else:            
+            point_list.append(points)
+            semantic_label_list.append(labels)
+            instance_label_list.append(instances)
+            
+
+        i = i + 1
+
+    point_list = np.asarray(point_list)
+    semantic_label_list = np.asarray(semantic_label_list)
+    instance_label_list = np.asarray(instance_label_list)
+
+    return point_list, semantic_label_list, instance_label_list
+
 if __name__ == "__main__":
+    random.seed(1337) 
     INPUTLIST = glob.glob(os.path.join(INPUT, "*.csv"))
     print(len(INPUTLIST))
     output_num = 0
