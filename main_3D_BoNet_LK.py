@@ -68,16 +68,16 @@ class BoNet:
 		l0_points = X_pc[:, :, 3:]
 
 		#run3
-		radius1 = 2
-		radius2 = 4
-		radius3 = 8
-		radius4 = 16
+		# radius1 = 2
+		# radius2 = 4
+		# radius3 = 8
+		# radius4 = 16
 
 		#run4
-		# radius1 = 1
-		# radius2 = 2
-		# radius3 = 4
-		# radius4 = 8
+		radius1 = 1
+		radius2 = 2
+		radius3 = 4
+		radius4 = 8
 
 		#run5
 		# radius1 = 9.6
