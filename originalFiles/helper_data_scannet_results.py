@@ -1,4 +1,4 @@
-from helper_data_plot import Plot as Plot
+from originalFiles.helper_data_plot import Plot as Plot
 import os
 import numpy as np
 

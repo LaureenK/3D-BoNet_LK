@@ -10,8 +10,6 @@ import numpy as np
 parser = argparse.ArgumentParser()
 parser.add_argument('--inputpath', default='/hdd/klein/TestFiles/')
 parser.add_argument('--outputpath', default='/hdd/klein/prepared/TestFiles/')
-#parser.add_argument('--inputpath', default='E:/Users/Laureen/Documents/Test1/')
-#parser.add_argument('--outputpath', default='E:/Users/Laureen/Documents/Test2/')
 FLAGS = parser.parse_args()  
 
 
@@ -21,9 +19,6 @@ OUTPUT = FLAGS.outputpath
 NUM_CLASSES = 4
 NUM_POINTS = 2**14
 
-#DATASET_TRAIN_DIR = "/bigdata_hdd/klein/FrKlein_PoC/data/TrainFiles/"
-#DATASET_VALIDATION_DIR = "/bigdata_hdd/klein/FrKlein_PoC/data/ValidationFiles/"
-#DATASET_TEST_DIR = "/bigdata_hdd/klein/FrKlein_PoC/data/TestFiles/"
 
 CLASS_MAPPING = {
     1: 0,  # original PERSON(1) --> 0

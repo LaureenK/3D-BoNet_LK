@@ -5,7 +5,7 @@ import scipy.io
 import tensorflow as tf
 import glob
 import h5py
-import helper_data_s3dis_LK
+import helper_data_dvs
 
 MODELPATH = "/home/klein/bonet/results/run4/log/train_mod/model050.cptk"
 INPUTPATH = "/hdd/klein/prepared/TestFiles/"
@@ -49,7 +49,7 @@ def safeFile(pts, gt_sem, gt_group, pred_sem, labels, sem_pred_val, ins_pred_val
 def load_net(model_path):
 		#######
 		from main_3D_BoNet_LK import BoNet
-		from helper_data_s3dis_LK import Data_Configs as Data_Configs
+		from helper_data_dvs import Data_Configs as Data_Configs
 		configs = Data_Configs()
 		net = BoNet(configs=configs)
 
@@ -78,7 +78,7 @@ def load_net(model_path):
 def test():
 	net = load_net(MODELPATH)
 
-	from helper_data_s3dis_LK import Data_S3DIS as Data
+	from helper_data_dvs import Data_S3DIS as Data
 
 	train_dataset_path = '/hdd/klein/prepared/TrainFiles'
 	test_dataset_path = '/hdd/klein/prepared/TestFiles'
@@ -111,9 +111,6 @@ def test():
 		ins_pred_val = np.max(pmask_pred, axis=-2)
 
 		safeFile(pc, bat_sem_gt, bat_ins_gt, sem_pred, ins_pred, sem_pred_val, ins_pred_val, file_path)
-
-
-
 
 #######################
 if __name__=='__main__':

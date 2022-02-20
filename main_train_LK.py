@@ -3,7 +3,7 @@ import numpy as np
 
 import logging
 
-from helper_data_s3dis_LK import NUM_POINTS
+from helper_data_dvs import NUM_POINTS
 logging.basicConfig(format='%(asctime)s %(message)s')
 
 NUM_POINT = 2**14
@@ -64,8 +64,6 @@ def train(net, data):
 
 				#print("Right num of instances: ", ins1num, " Predicted num: ", ins2num, " Diff: ",abs(ins1num - ins2num), " Total: ", diff_sum)
 
-
-			
 			acc_sum += float((sum_acc/(batchsize)))
 			diff_sum += float((sum_diff/(batchsize)))
 			num_sum += float((sum_num/(batchsize)))
@@ -100,35 +98,11 @@ def train(net, data):
 			if ep % 5 == 0 and i == total_train_batch_num - 1:
 				net.saver.save(net.sess, save_path=net.train_mod_dir + 'model' + str(ep).zfill(3) + '.cptk')
 
-			##### full eval, if needed
-			#if ep%5==0 and i==total_train_batch_num-1:
-			
-			# if i==(total_train_batch_num-1):
-			# 	print('Testing')
-			# 	from main_eval_LK import Evaluation
-			# 	result_path = './log/test_res/test_LK/'
-			# 	Evaluation.ttest(net, data, result_path, test_batch_size=1)
-
-			# 	Evaluation.evaluation(train_dataset_path, result_path)
-			# 	print('full eval finished!')
-
 		
 		logging.warning('Semantic mean accuracy: %.2f' % ((acc_sum / float(total_train_batch_num))))
 		logging.warning('Instance mean difference: %.2f' % (diff_sum / float(total_train_batch_num)))
 		logging.warning('Instance mean: %.2f' % (num_sum / float(total_train_batch_num)))
 		logging.warning('End epoch %d' % ep)
-
-		if ep != 0 and ep%50==0:
-				print('Testing')
-				from main_eval_LK import Evaluation
-				result_path = './log/test_res/test_LK/'
-				Evaluation.ttest(net, data, result_path, test_batch_size=1)
-
-				Evaluation.evaluation(train_dataset_path, result_path)
-				print('full eval finished!')
-
-
-
 
 ############
 if __name__=='__main__':
@@ -137,7 +111,7 @@ if __name__=='__main__':
 	os.environ["CUDA_VISIBLE_DEVICES"] = '0'  ## specify the GPU to use
 
 	from main_3D_BoNet_LK import BoNet
-	from helper_data_s3dis_LK import Data_Configs as Data_Configs
+	from helper_data_dvs import Data_Configs as Data_Configs
 
 	configs = Data_Configs()
 	net = BoNet(configs = configs)
@@ -145,7 +119,7 @@ if __name__=='__main__':
 	net.build_graph()
 
 	####
-	from helper_data_s3dis_LK import Data_S3DIS as Data
+	from helper_data_dvs import Data_DVS as Data
 
 	train_dataset_path = '/hdd/klein/prepared/TrainFiles'
 	test_dataset_path = '/hdd/klein/prepared/TestFiles'

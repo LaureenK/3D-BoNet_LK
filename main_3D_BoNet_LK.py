@@ -1,7 +1,7 @@
 import tensorflow as tf
 import os
 import shutil
-from helper_net import Ops as Ops
+from originalFiles.helper_net import Ops as Ops
 
 class BoNet:
 	def __init__(self, configs):
@@ -61,7 +61,7 @@ class BoNet:
 		return point_features, global_features, y_sem_pred
 
 	def backbone_pointnet2(self, X_pc, is_train=None):
-		import helper_pointnet2 as pnet2
+		import originalFiles.helper_pointnet2 as pnet2
 		points_num = tf.shape(X_pc)[1]
 
 		l0_xyz = X_pc[:, :, :3]

@@ -4,7 +4,6 @@ import numpy as np
 import random
 import copy
 from random import shuffle
-import h5py
 
 NUM_POINTS = 2**14
 
@@ -25,16 +24,13 @@ class Data_Configs:
     test_pts_num = NUM_POINTS
     batchsize = 2
 
-class Data_S3DIS:
+class Data_DVS:
     def __init__(self, train_dataset_path, test_dataset_path, train_batch_size=8):
-        # init__( dataset_path = './data_s3dis/', train_areas = ['Area_1'], test_areas = ['Area_5'], train_batch_size=4):
 
         self.train_files = glob.glob(os.path.join(train_dataset_path, "*.csv"))
         self.test_files = glob.glob(os.path.join(test_dataset_path, "*.csv"))
         print('train files:', len(self.train_files))
         print('test files:', len(self.test_files))
-
-        
 
         self.ins_max_num = Data_Configs.ins_max_num
         self.train_batch_size = train_batch_size
@@ -73,42 +69,6 @@ class Data_S3DIS:
 
         if len(npIns) != NUM_POINTS:
             raise ValueError("Wrong NUM_POINTS of cloud: ", fname)
- 
-        #pc
-        #<type 'numpy.ndarray'>
-        #(4096, 9)
-
-        #npPoints
-        #<type 'numpy.ndarray'>
-        #(16384, 3)
-
-        #sem_labels
-        #<type 'numpy.ndarray'>
-        #(4096,)
-
-        #npSeg
-        #<type 'numpy.ndarray'>
-        #(16384,)
-
-        #ins_labels
-        #<type 'numpy.ndarray'>
-        #(4096,)
-
-        #npIns
-        #<type 'numpy.ndarray'>
-        #(16384,)
-
-        # testarray1 = np.zeros_like(npPoints)
-        # testarray2 = np.zeros_like(npPoints)
-        # testarray3 = np.concatenate([testarray1, testarray2], axis=-1)
-        #testarray1 = np.random.rand(npPoints.shape[0],npPoints.shape[1])
-        #testarray2 = np.random.rand(npPoints.shape[0],npPoints.shape[1])
-        #testarray3 = np.concatenate([testarray1, testarray2], axis=-1)
-        #npPoints = np.concatenate([npPoints, testarray3], axis=-1)
-
-
-        #print("npPoints")
-        #print(npPoints.shape)
 
         return npPoints, npSeg, npIns
 
@@ -145,39 +105,13 @@ class Data_S3DIS:
 
     @staticmethod
     def load_fixed_points(file_path):
-        pc_xyzrgb, sem_labels, ins_labels = Data_S3DIS.load_ascii_cloud_prepared(file_path)
-
-        # ## center xy within the block
-        # min_x = np.min(pc_xyzrgb[:,0]); max_x = np.max(pc_xyzrgb[:,0])
-        # min_y = np.min(pc_xyzrgb[:,1]); max_y = np.max(pc_xyzrgb[:,1])
-        # min_z = np.min(pc_xyzrgb[:,2]); max_z = np.max(pc_xyzrgb[:,2])
-
-        # #print("min_x : ", min_x, " max_x: ", max_x)
-        # #print("min_y : ", min_y, " max_y: ", max_y)
-        # #print("min_z : ", min_z, " max_x: ", max_z)
-
-        # ori_xyz = copy.deepcopy(pc_xyzrgb[:, 0:3])  # reserved for final visualization
-        # use_zero_one_center = True
-        # if use_zero_one_center:
-        #     pc_xyzrgb[:, 0:1] = (pc_xyzrgb[:, 0:1] - min_x)/ np.maximum((max_x - min_x), 1e-3)
-        #     pc_xyzrgb[:, 1:2] = (pc_xyzrgb[:, 1:2] - min_y)/ np.maximum((max_y - min_y), 1e-3)
-        #     pc_xyzrgb[:, 2:3] = (pc_xyzrgb[:, 2:3] - min_z)/ np.maximum((max_z - min_z), 1e-3)
-
-        # min_x = np.min(pc_xyzrgb[:,0]); max_x = np.max(pc_xyzrgb[:,0])
-        # min_y = np.min(pc_xyzrgb[:,1]); max_y = np.max(pc_xyzrgb[:,1])
-        # min_z = np.min(pc_xyzrgb[:,2]); max_z = np.max(pc_xyzrgb[:,2])
-
-        # #print("2 min_x : ", min_x, " max_x: ", max_x)
-        # #print("2 min_y : ", min_y, " max_y: ", max_y)
-        # #print("2 min_z : ", min_z, " max_z: ", max_z)
-
-        # pc_xyzrgb = np.concatenate([pc_xyzrgb, ori_xyz], axis=-1)
+        pc_xyzrgb, sem_labels, ins_labels = Data_DVS.load_ascii_cloud_prepared(file_path)
 
         #######
         sem_labels = sem_labels.reshape([-1])
         ins_labels = ins_labels.reshape([-1])
         
-        bbvert_padded_labels, pmask_padded_labels = Data_S3DIS.get_bbvert_pmask_labels(pc_xyzrgb, ins_labels)
+        bbvert_padded_labels, pmask_padded_labels = Data_DVS.get_bbvert_pmask_labels(pc_xyzrgb, ins_labels)
 
         psem_onehot_labels = np.zeros((pc_xyzrgb.shape[0], Data_Configs.sem_num), dtype=np.int8)
         for idx, s in enumerate(sem_labels):
@@ -196,7 +130,7 @@ class Data_S3DIS:
         bat_bbvert_padded_labels=[]
         bat_pmask_padded_labels =[]
         for file in bat_files:
-            pc, sem_labels, ins_labels, psem_onehot_labels, bbvert_padded_labels, pmask_padded_labels = Data_S3DIS.load_fixed_points(file)
+            pc, sem_labels, ins_labels, psem_onehot_labels, bbvert_padded_labels, pmask_padded_labels = Data_DVS.load_fixed_points(file)
             bat_pc.append(pc)
             bat_sem_labels.append(sem_labels)
             bat_ins_labels.append(ins_labels)
@@ -224,7 +158,7 @@ class Data_S3DIS:
         bat_pmask_padded_labels =[]
         for i in idx:
             file = self.test_files[i]
-            pc, sem_labels, ins_labels, psem_onehot_labels, bbvert_padded_labels, pmask_padded_labels = Data_S3DIS.load_fixed_points(file)
+            pc, sem_labels, ins_labels, psem_onehot_labels, bbvert_padded_labels, pmask_padded_labels = Data_DVS.load_fixed_points(file)
             bat_pc.append(pc)
             bat_sem_labels.append(sem_labels)
             bat_ins_labels.append(ins_labels)
@@ -242,7 +176,6 @@ class Data_S3DIS:
         return bat_pc, bat_sem_labels, bat_ins_labels, bat_psem_onehot_labels, bat_bbvert_padded_labels, bat_pmask_padded_labels
     
     def load_test_next_batch_sq(self, bat_files):
-        #wenn nur eine Datei, dann wird nur eine Datei geladen aus batch_files
         bat_pc=[]
         bat_sem_labels=[]
         bat_ins_labels=[]
@@ -250,7 +183,7 @@ class Data_S3DIS:
         bat_bbvert_padded_labels=[]
         bat_pmask_padded_labels =[]
         for file in bat_files:
-            pc, sem_labels, ins_labels, psem_onehot_labels, bbvert_padded_labels, pmask_padded_labels = Data_S3DIS.load_fixed_points(file)
+            pc, sem_labels, ins_labels, psem_onehot_labels, bbvert_padded_labels, pmask_padded_labels = Data_DVS.load_fixed_points(file)
             bat_pc += [pc]
             bat_sem_labels += [sem_labels]
             bat_ins_labels += [ins_labels]

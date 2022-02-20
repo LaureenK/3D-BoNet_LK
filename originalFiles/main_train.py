@@ -73,7 +73,7 @@ def train(net, data):
 
 			if i==total_train_batch_num-1:
 				print('Testing')
-				from main_eval import Evaluation
+				from originalFiles.main_eval import Evaluation
 				result_path = './log/test_res/' + str(ep).zfill(3)+'_'+test_areas[0] + '/'
 				#Evaluation.ttest(net, data, result_path, test_batch_size=20)
 				
@@ -89,8 +89,8 @@ if __name__=='__main__':
 	os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
 	os.environ["CUDA_VISIBLE_DEVICES"] = '0'  ## specify the GPU to use
 
-	from main_3D_BoNet import BoNet
-	from helper_data_s3dis import Data_Configs as Data_Configs
+	from originalFiles.main_3D_BoNet import BoNet
+	from originalFiles.helper_data_s3dis import Data_Configs as Data_Configs
 
 	configs = Data_Configs()
 	net = BoNet(configs = configs)
@@ -98,7 +98,7 @@ if __name__=='__main__':
 	net.build_graph()
 
 	####
-	from helper_data_s3dis import Data_S3DIS as Data
+	from originalFiles.helper_data_s3dis import Data_S3DIS as Data
 	train_areas =['Area_1']
 	test_areas =['Area_5']
 

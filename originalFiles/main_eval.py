@@ -63,7 +63,7 @@ class Eval_Tools:
 
 	@staticmethod
 	def get_mean_insSize_by_sem(dataset_path, train_areas):
-		from helper_data_s3dis import Data_Configs as Data_Configs
+		from originalFiles.helper_data_s3dis import Data_Configs as Data_Configs
 		configs = Data_Configs()
 
 		mean_insSize_by_sem = {}
@@ -95,8 +95,8 @@ class Evaluation:
 	@staticmethod
 	def load_net_data(dataset_path, train_areas, test_areas, model_path):
 		#######
-		from main_3D_BoNet import BoNet
-		from helper_data_s3dis import Data_Configs as Data_Configs
+		from originalFiles.main_3D_BoNet import BoNet
+		from originalFiles.helper_data_s3dis import Data_Configs as Data_Configs
 		configs = Data_Configs()
 		net = BoNet(configs=configs)
 
@@ -121,7 +121,7 @@ class Evaluation:
 		print('Model restored sucessful!')
 
 		####### 3. load data
-		from helper_data_s3dis import Data_S3DIS as Data
+		from originalFiles.helper_data_s3dis import Data_S3DIS as Data
 		data = Data(dataset_path, train_areas, test_areas)
 
 		return net, data
@@ -187,7 +187,7 @@ class Evaluation:
 
 	@staticmethod
 	def evaluation(dataset_path, train_areas, result_path):
-		from helper_data_s3dis import Data_Configs as Data_Configs
+		from originalFiles.helper_data_s3dis import Data_Configs as Data_Configs
 		configs = Data_Configs()
 		mean_insSize_by_sem = Eval_Tools.get_mean_insSize_by_sem(dataset_path, train_areas)
 

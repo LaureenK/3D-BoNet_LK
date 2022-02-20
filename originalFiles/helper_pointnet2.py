@@ -12,7 +12,7 @@ from tf_ops.interpolation.tf_interpolate import three_nn, three_interpolate
 import tensorflow as tf
 import numpy as np
 
-from helper_net import Ops as Ops
+from originalFiles.helper_net import Ops as Ops
 
 def sample_and_group(npoint, radius, nsample, xyz, points, knn=False, use_xyz=True):
     '''
