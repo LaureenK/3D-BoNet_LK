@@ -79,7 +79,7 @@ def load_net(model_path):
 def test():
 	net = load_net(MODELPATH)
 
-	from helper_data_dvs import Data_S3DIS as Data
+	from helper_data_dvs import Data_DVS as Data
 
 	train_dataset_path = '/hdd/klein/prepared/TrainFiles'
 	test_dataset_path = '/hdd/klein/prepared/TestFiles'
