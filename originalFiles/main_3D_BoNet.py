@@ -1,7 +1,7 @@
 import tensorflow as tf
 import os
 import shutil
-from originalFiles.helper_net import Ops as Ops
+from helper_net import Ops as Ops
 
 class BoNet:
 	def __init__(self, configs):
