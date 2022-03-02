@@ -1,4 +1,5 @@
 import numpy as np
+import time
 import scipy.stats
 import os
 import scipy.io
@@ -7,9 +8,9 @@ import glob
 import h5py
 import helper_data_dvs
 
-MODELPATH = "/home/klein/bonet/results/run4/log/train_mod/model050.cptk"
+MODELPATH = "/home/klein/bonet/results/run5/log/train_mod/model050.cptk"
 INPUTPATH = "/hdd/klein/prepared/TestFiles/"
-OUTPUTPATH = "/home/klein/bonet/results/run4/result/"
+OUTPUTPATH = "/home/klein/bonet/results/run_Time/result/"
 
 ROOM_PATH_LIST = glob.glob(os.path.join(INPUTPATH, "*.csv"))
 len_pts_files = len(ROOM_PATH_LIST)
@@ -95,8 +96,14 @@ def test():
 		bat_pc, bat_sem_gt, bat_ins_gt, bat_psem_onehot, bat_bbvert, bat_pmask, bat_files = data.load_test_next_batch_sq(bat_files=file_list)
 
 		#run session
+		start_time = time.time()
+
 		[y_psem_pred_sq_raw, y_bbvert_pred_sq_raw, y_bbscore_pred_sq_raw, y_pmask_pred_sq_raw] = \
 		net.sess.run([net.y_psem_pred, net.y_bbvert_pred_raw, net.y_bbscore_pred_raw, net.y_pmask_pred_raw],feed_dict={net.X_pc: bat_pc[:, :, 0:3], net.is_train: False})
+		
+		duration = time.time() - start_time
+		print("Time: ")
+		print(duration)
 
 		pc = np.asarray(bat_pc[0], dtype=np.float16)
 		sem_pred_raw = np.asarray(y_psem_pred_sq_raw[0], dtype=np.float16)
@@ -110,7 +117,7 @@ def test():
 		ins_pred = np.argmax(pmask_pred, axis=-2)
 		ins_pred_val = np.max(pmask_pred, axis=-2)
 
-		safeFile(pc, bat_sem_gt, bat_ins_gt, sem_pred, ins_pred, sem_pred_val, ins_pred_val, file_path)
+		#safeFile(pc, bat_sem_gt, bat_ins_gt, sem_pred, ins_pred, sem_pred_val, ins_pred_val, file_path)
 
 #######################
 if __name__=='__main__':
